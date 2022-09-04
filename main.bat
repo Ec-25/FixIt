@@ -1,6 +1,6 @@
 @echo off
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
-REM color 17
+color 17
 title FixIt
 
 goto check_Permissions
