@@ -5,15 +5,13 @@ echo.       ====================================================================
 echo.       =                            HERRAMIENTAS ADICIONALES                             =
 echo.       ===================================================================================
 echo.       =                                                                                 =
-echo.       =      1]   Office 2021 Installer                                                 =
+echo.       =      1]   Viejo Visor de Fotos                                                  =
 echo.       =                                                                                 =
-echo.       =      2]   Viejo Visor de Fotos                                                  =
+echo.       =      2]   Codec de Audio Actializado                                            =
 echo.       =                                                                                 =
-echo.       =      3]   Codec de Audio Actializado                                            =
+echo.       =      3]   Convertir Disco MBR a GPT (no recomendado)                            =
 echo.       =                                                                                 =
-echo.       =      4]   Convertir Disco MBR a GPT (not recommended)                           =
-echo.       =                                                                                 =
-echo.       =      5]   AntiMalware Scannig                                                   =
+echo.       =      4]   AntiMalware Scannig                                                   =
 echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                             by JuanchoWolf
@@ -23,12 +21,12 @@ echo.
 set /p tool=Opcion =   
 
 if "%tool%" == "0" goto salir
-if "%tool%" == "1" goto 5op1
+if "%tool%" == "office2021" goto 5op1
+if "%tool%" == "1" goto 5selop
 if "%tool%" == "2" goto 5selop
-if "%tool%" == "3" goto 5selop
-if "%tool%" == "4" goto 5op4
-if "%tool%" == "5" goto 5op5
-if not "%tool%" == "5" goto tl5
+if "%tool%" == "3" goto 5op4
+if "%tool%" == "4" goto 5op5
+if not "%tool%" == "4" goto tl5
 
 :5op1
 start https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img
@@ -77,7 +75,7 @@ if not "%confirm%" == "1" goto salir
 
 
 :5op4a
-DiskPart /s dp.bat
+DiskPart /s dp.cmd
 cd C:\Windows\System32
 echo.
 set /p disk=Indique el numero del disco a Convertir que NO sea GPT   
