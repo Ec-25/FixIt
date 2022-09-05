@@ -82,4 +82,4 @@ goto exit
 :salir
 cd "%~p0"
 cd..
-main.bat
+main.cmd

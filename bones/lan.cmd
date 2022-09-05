@@ -86,4 +86,4 @@ goto tl2
 :salir
 cd "%~p0"
 cd..
-main.bat
+main.cmd
