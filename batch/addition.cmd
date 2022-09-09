@@ -11,7 +11,9 @@ echo.       =      2]   Codec de Video HEVC (H.265) Actializado                 
 echo.       =                                                                                 =
 echo.       =      3]   Convertir Disco MBR a GPT (no recomendado)                            =
 echo.       =                                                                                 =
-echo.       =      4]   AntiMalware Scannig                                                   =
+echo.       =      4]   Analisis Antimalware                                                  =
+echo.       =                                                                                 =
+echo.       =      5]   Quitar Marca de agua de Windows (10 y 11)                             =
 echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                             by JuanchoWolf
@@ -26,7 +28,8 @@ if "%tool%" == "1" goto 5op2
 if "%tool%" == "2" goto 5op3
 if "%tool%" == "3" goto 5op4
 if "%tool%" == "4" goto 5op5
-if not "%tool%" == "4" goto tl5
+if "%tool%" == "5" goto 5op6
+if not "%tool%" == "5" goto tl5
 
 :5op1
 start https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img
@@ -89,6 +92,13 @@ echo. Sistema de eliminacion de software malintencionado
 echo. __________________________________________________
 mrt
 echo.
+goto tl5
+
+:5op6
+cd %~p0&cd tools
+start svsvc.reg
+taskkill /im explorer.exe
+start explorer.exe
 goto tl5
 
 :salir
