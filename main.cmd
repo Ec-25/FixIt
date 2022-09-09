@@ -44,34 +44,26 @@ if "%tool%" == "5" goto tl5
 if not "%tool%" == "0, 1, 2, 3, 4 or 5" goto ini
 
 :tl1
-cd "%~p0\bones"
+cd "%~p0\batch"
 repair-so.cmd
 
 :tl2
-cd "%~p0\bones"
+cd "%~p0\batch"
 lan.cmd
 
 :tl3
-cd "%~p0\bones"
+cd "%~p0\batch"
 flash.cmd
 
 :tl4
-cd "%~p0\bones"
+cd "%~p0\batch"
 programs.cmd
 
 :tl5
-cd "%~p0\bones"
+cd "%~p0\batch"
 addition.cmd
 
 :salir
-cd %~p0
-DEL office.exe
-DEL otherTools /f /s /q
-RD  otherTools /s /q
-cd "%~p0\bones"
-DEL office.exe
-DEL otherTools /f /s /q
-RD  otherTools /s /q
 exit
 
 :check_Permissions
@@ -81,6 +73,7 @@ if %errorLevel% == 0 (
     echo Exito: Permisos administrativos confirmados.
     goto ini
 ) else (
+    color 4f
     echo Fallo: Permisos actuales inadecuados. 
     echo        NECESITA SER ADMINISTRADOR
     pause >nul

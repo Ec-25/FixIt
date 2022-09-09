@@ -7,7 +7,7 @@ echo.       ====================================================================
 echo.       =                                                                                 =
 echo.       =      1]   Viejo Visor de Fotos                                                  =
 echo.       =                                                                                 =
-echo.       =      2]   Codec de Audio Actializado                                            =
+echo.       =      2]   Codec de Video HEVC (H.265) Actializado                               =
 echo.       =                                                                                 =
 echo.       =      3]   Convertir Disco MBR a GPT (no recomendado)                            =
 echo.       =                                                                                 =
@@ -21,9 +21,9 @@ echo.
 set /p tool=Opcion =   
 
 if "%tool%" == "0" goto salir
-if "%tool%" == "office2021" goto 5op1
-if "%tool%" == "1" goto 5selop
-if "%tool%" == "2" goto 5selop
+if "%tool%" == "off" goto 5op1
+if "%tool%" == "1" goto 5op2
+if "%tool%" == "2" goto 5op3
 if "%tool%" == "3" goto 5op4
 if "%tool%" == "4" goto 5op5
 if not "%tool%" == "4" goto tl5
@@ -38,25 +38,14 @@ echo Listo, ejecute el Setup.exe y su programa se instalara.
 pause
 goto tl5
 
-:5selop
-start https://drive.google.com/uc?id=1UWrNule5gi1Q5tkcKqO34zlLgtZP35gw
-pause
-MOVE "C:\Users\%username%\Downloads\otherTools.zip" "%~p0"
-cd %~p0
-tar -xf otherTools.zip
-DEL otherTools.zip
-if "%tool%" == "2" goto 5op2
-if "%tool%" == "3" goto 5op3
-
 :5op2
-cd %~p0&cd otherTools
+cd %~p0&cd tools
 start visualphotos.reg
 pause
 goto tl5
 
 :5op3
-cd %~p0&cd otherTools
-POWERSHELL "Add-AppxPackage Microsoft.HEVCVideoExtension_1.0.42701.0_x64__8wekyb3d8bbwe.Appx"
+start ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 pause
 goto tl5
 
