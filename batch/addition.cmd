@@ -96,9 +96,9 @@ goto tl5
 
 :5op6
 cd %~p0&cd tools
-start svsvc.reg
-taskkill /im explorer.exe
-start explorer.exe
+start watermark.reg
+cd. Para que los cambios surtan efecto, reinicia el equipo
+cd. Listo...
 goto tl5
 
 :salir
