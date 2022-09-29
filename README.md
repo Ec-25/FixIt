@@ -22,7 +22,7 @@
  Opciones varias para el mantenimiento optimizado del Sistema.
  
 # Herramientas Adicionales
-![op5](https://user-images.githubusercontent.com/57842821/189446635-36e0303c-ad57-49a3-9014-4605db6238bb.png)
+![op5](https://user-images.githubusercontent.com/57842821/193160527-be65a538-5a33-4c1f-8515-0846b3fb6e70.png)
 
 
  Herramientas varias que pueden solucionar determinados problemas del equipo.
