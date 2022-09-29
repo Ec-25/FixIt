@@ -15,6 +15,10 @@ echo.       =      4]   Analisis Antimalware                                    
 echo.       =                                                                                 =
 echo.       =      5]   Quitar Marca de agua de Windows (10 y 11)                             =
 echo.       =                                                                                 =
+echo.       =      6]   Añadir capa de seguridad al Sistema contra Ejecucion de Malware       =
+echo.       =                                                                                 =
+echo.       =      7]   Quitar capa de seguridad al Sistema contra Ejecucion de Malware       =
+echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                             by JuanchoWolf
 echo.           ADVERTENCIA! Pulse 0 para volver al Inicio
@@ -29,7 +33,9 @@ if "%tool%" == "2" goto 5op3
 if "%tool%" == "3" goto 5op4
 if "%tool%" == "4" goto 5op5
 if "%tool%" == "5" goto 5op6
-if not "%tool%" == "5" goto tl5
+if "%tool%" == "6" goto 5op7
+if "%tool%" == "7" goto 5op7Ds
+if not "%tool%" == "7" goto tl5
 
 :5op1
 start https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img
@@ -97,8 +103,22 @@ goto tl5
 :5op6
 cd %~p0&cd tools
 start watermark.reg
-cd. Para que los cambios surtan efecto, reinicia el equipo
-cd. Listo...
+echo. Para que los cambios surtan efecto, reinicia el equipo
+echo. Listo...
+goto tl5
+
+:5op7
+cd %~p0&cd tools
+echo. Capa de Seguridad Habilitada
+start capa-seguridad-Enabled.reg
+echo. Listo...
+goto tl5
+
+:5op7Ds
+cd %~p0&cd tools
+echo. Capa de Seguridad Deshabilitada
+start capa-seguridad-Disabled.reg
+echo. Listo...
 goto tl5
 
 :salir
