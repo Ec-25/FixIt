@@ -15,7 +15,7 @@ echo.       =      4]   Analisis Antimalware                                    
 echo.       =                                                                                 =
 echo.       =      5]   Quitar Marca de agua de Windows (10 y 11)                             =
 echo.       =                                                                                 =
-echo.       =      6]   Añadir capa de seguridad al Sistema contra Ejecucion de Malware       =
+echo.       =      6]   Agregar capa de seguridad al Sistema contra Ejecucion de Malware      =
 echo.       =                                                                                 =
 echo.       =      7]   Quitar capa de seguridad al Sistema contra Ejecucion de Malware       =
 echo.       =                                                                                 =
