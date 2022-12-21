@@ -11,17 +11,32 @@ echo.       =      2]   Testeo de DNS's                                         
 echo.       =                                                                                 =
 echo.       =      3]   Selector de DNS interno                                               =
 echo.       =                                                                                 =
+echo.       =      4]   Ver Contrasegna de Wifi's                                             =
+echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                             by JuanchoWolf
 echo.           ADVERTENCIA! Pulse 0 para volver al Inicio
 
 set /p tool=Opcion =   
 
-if "%tool%" == "0" goto salir
-if "%tool%" == "1" goto 2op1
-if "%tool%" == "2" goto 2op2
-if "%tool%" == "3" goto 2op3
-if not "%tool%" == "0, 1, 2 or 3" goto tl2
+if "%tool%" == "0" (
+    goto salir
+)
+if "%tool%" == "1" (
+    goto 2op1
+)
+if "%tool%" == "2" (
+    goto 2op2
+)
+if "%tool%" == "3" (
+    goto 2op3
+)
+if "%tool%" == "4" (
+    goto 2op4
+)
+else (
+    goto tl2
+)
 
 :2op1
 echo.
@@ -77,6 +92,20 @@ echo.
 echo.
 netsh interface ipv4 set dnsservers %Red% static %DNS1% primary
 netsh interface ipv4 add dnsservers %Red% %DNS2% index=2
+echo.
+echo Listo!
+echo.
+pause
+goto tl2
+
+:2op4
+netsh wlan show profile
+echo.
+echo Copie y Pegue el nombre exacto del Wifi
+echo.
+set /p key=Wifi?   
+echo.
+netsh wlan show profile name="%key%" key=clear
 echo.
 echo Listo!
 echo.
