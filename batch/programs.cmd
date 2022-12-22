@@ -23,6 +23,8 @@ echo.       =      7]   Limpiar Windows Defender                                
 echo.       =                                                                                 =
 echo.       =      8]   Editar tiempo del Historial de WinDefender (30d, predefinido)         =
 echo.       =                                                                                 =
+echo.       =      9]   Herramienta para Desinstalar Office                                   =
+echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -45,6 +47,7 @@ if "%tool%" == "5" goto 4op5
 if "%tool%" == "6" goto 4op6
 if "%tool%" == "7" goto 4op7
 if "%tool%" == "8" goto 4op8
+if "%tool%" == "9" goto 4op9
 else goto tl4
 
 :4op1
@@ -240,5 +243,16 @@ echo.
 echo. Usted eligio %tiemp% Dias!
 POWERSHELL Set-MpPreference -ScanPurgeItemsAfterDelay %tiemp%
 echo. Listo!
+pause
+goto tl4
+
+:4op9
+start https://aka.ms/SaRA-officeUninstallFromPC
+move C:\Users\%username%\Downloads\SetupProd_OffScrub.exe %~p0
+cd "%~p0"
+start SetupProd_OffScrub.exe
+pause
+del SetupProd_OffScrub.exe /f /s /q
+echo.
 pause
 goto tl4
