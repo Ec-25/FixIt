@@ -1,6 +1,8 @@
 :tl5
 cls
 
+echo.
+echo.
 echo.       ===================================================================================
 echo.       =                            HERRAMIENTAS ADICIONALES                             =
 echo.       ===================================================================================
@@ -19,9 +21,11 @@ echo.       =      6]   Agregar capa de seguridad al Sistema contra Ejecucion de
 echo.       =                                                                                 =
 echo.       =      7]   Quitar capa de seguridad al Sistema contra Ejecucion de Malware       =
 echo.       =                                                                                 =
+echo.       =      0]   Salir                                                                 =
+echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                             by JuanchoWolf
-echo.           ADVERTENCIA! Pulse 0 para volver al Inicio
+echo.
 echo.
 
 set /p tool=Opcion =   

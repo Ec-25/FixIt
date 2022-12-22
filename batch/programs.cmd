@@ -1,6 +1,8 @@
 :tl4
 cls
 
+echo.
+echo.
 echo.       ===================================================================================
 echo.       =                            HERRAMIENTAS DE PROGRAMAS                            =
 echo.       ===================================================================================
@@ -21,14 +23,20 @@ echo.       =      7]   Limpiar Windows Defender                                
 echo.       =                                                                                 =
 echo.       =      8]   Editar tiempo del Historial de WinDefender (30d, predefinido)         =
 echo.       =                                                                                 =
+echo.       =      0]   Salir                                                                 =
+echo.       =                                                                                 =
 echo.       ===================================================================================
-echo.                                             by JuanchoWolf
-echo.           ADVERTENCIA! Pulse 0 para volver al Inicio
+echo.                                        by JuanchoWolf
+echo.
 echo.
 
 set /p tool=Opcion =   
 
-if "%tool%" == "0" goto salir
+if "%tool%" == "0" (
+    cd "%~p0"
+    cd..
+    main.cmd
+)
 if "%tool%" == "1" goto 4op1
 if "%tool%" == "2" goto 4op2
 if "%tool%" == "3" goto 4op3
@@ -37,7 +45,7 @@ if "%tool%" == "5" goto 4op5
 if "%tool%" == "6" goto 4op6
 if "%tool%" == "7" goto 4op7
 if "%tool%" == "8" goto 4op8
-if not "%tool%" == "8" goto tl4
+else goto tl4
 
 :4op1
 echo.
@@ -234,8 +242,3 @@ POWERSHELL Set-MpPreference -ScanPurgeItemsAfterDelay %tiemp%
 echo. Listo!
 pause
 goto tl4
-
-:salir
-cd "%~p0"
-cd..
-main.cmd

@@ -1,6 +1,8 @@
 :tl2
 cls
 
+echo.
+echo.
 echo.       ===================================================================================
 echo.       =                            HERRAMIENTAS DE INTERNET                             =
 echo.       ===================================================================================
@@ -13,14 +15,19 @@ echo.       =      3]   Selector de DNS interno                                 
 echo.       =                                                                                 =
 echo.       =      4]   Ver Contrasegna de Wifi's                                             =
 echo.       =                                                                                 =
+echo.       =      0]   Salir                                                                 =
+echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                             by JuanchoWolf
-echo.           ADVERTENCIA! Pulse 0 para volver al Inicio
+echo.
+echo.
 
 set /p tool=Opcion =   
 
 if "%tool%" == "0" (
-    goto salir
+    cd "%~p0"
+    cd..
+    main.cmd
 )
 if "%tool%" == "1" (
     goto 2op1
@@ -111,8 +118,3 @@ echo Listo!
 echo.
 pause
 goto tl2
-
-:salir
-cd "%~p0"
-cd..
-main.cmd
