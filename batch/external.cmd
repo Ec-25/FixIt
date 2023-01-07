@@ -11,10 +11,14 @@ echo.       =      1]   Open Hardware Monitor                                   
 echo.       =                                                                                 =
 echo.       =      2]   AutoRuns                                                              =
 echo.       =                                                                                 =
+echo.       =      3]   Process Explorer                                                      =
+echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
-echo.                                         by JuanchoWolf
+echo.       ADVERTENCIA:    Ninguno de estos programas son de mi pertenencia.
+echo.                       Es Software de Codigo Abierto recopilado de Internet desde sus fuentes oficiales.
+echo.                           Ejecutelos bajo su propio riesgo.
 echo.
 echo.
 
@@ -62,7 +66,23 @@ if "%tool%" == "2" (
     cd..
     goto tl5
 )
-
+if "%tool%" == "3" (
+    if not exist "tools\ProcessExplorer" (
+        POWERSHELL Invoke-WebRequest -Uri "https://download.sysinternals.com/files/ProcessExplorer.zip" -OutFile "ProcessExplorer.zip"
+        timeout 5
+        POWERSHELL Expand-Archive -Path ProcessExplorer.zip
+        MOVE "ProcessExplorer" "tools"
+        DEL ProcessExplorer.zip
+    )
+    cd "tools\ProcessExplorer"
+    start procexp64.exe
+    echo.
+    echo.
+    echo LISTO
+    cd..
+    cd..
+    goto tl5
+)
 else (
     goto tl5
 )
