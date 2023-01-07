@@ -1,4 +1,4 @@
-:tl5
+:tl6
 cls
 
 echo.
@@ -39,7 +39,7 @@ if "%tool%" == "4" goto 5op5
 if "%tool%" == "5" goto 5op6
 if "%tool%" == "6" goto 5op7
 if "%tool%" == "7" goto 5op7Ds
-if not "%tool%" == "7" goto tl5
+if not "%tool%" == "7" goto tl6
 
 :5op1
 start https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img
@@ -49,18 +49,18 @@ cd %~p0
 start ProPlus2021Retail.img
 echo Listo, ejecute el Setup.exe y su programa se instalara.
 pause
-goto tl5
+goto tl6
 
 :5op2
 cd %~p0&cd tools
 start visualphotos.reg
 pause
-goto tl5
+goto tl6
 
 :5op3
 start ms-windows-store://pdp/?ProductId=9n4wgh0z6vhq
 pause
-goto tl5
+goto tl6
 
 :5op4
 cls
@@ -102,28 +102,28 @@ echo. Sistema de eliminacion de software malintencionado
 echo. __________________________________________________
 mrt
 echo.
-goto tl5
+goto tl6
 
 :5op6
 cd %~p0&cd tools
 start watermark.reg
 echo. Para que los cambios surtan efecto, reinicia el equipo
 echo. Listo...
-goto tl5
+goto tl6
 
 :5op7
 cd %~p0&cd tools
 echo. Capa de Seguridad Habilitada
 start capa-seguridad-Enabled.reg
 echo. Listo...
-goto tl5
+goto tl6
 
 :5op7Ds
 cd %~p0&cd tools
 echo. Capa de Seguridad Deshabilitada
 start capa-seguridad-Disabled.reg
 echo. Listo...
-goto tl5
+goto tl6
 
 :salir
 cd "%~p0"

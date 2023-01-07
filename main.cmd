@@ -30,9 +30,11 @@ echo.       =        3]     Reparacion Rapida                                   
 echo.       =                                                                                 =
 echo.       =        4]     Herramientas de Programas                                         =
 echo.       =                                                                                 =
-echo.       =        5]     Herramientas Adicionales                                          =
+echo.       =        5]     Herramientas de Programas Externos                                =
 echo.       =                                                                                 =
-echo.       =        6]     Accesos Directos                                                  =
+echo.       =        6]     Herramientas Adicionales                                          =
+echo.       =                                                                                 =
+echo.       =        7]     Accesos Directos                                                  =
 echo.       =                                                                                 =
 echo.       =        0]     Salir                                                             =
 echo.       =                                                                                 =
@@ -63,9 +65,13 @@ if "%tool%" == "4" (
 )
 if "%tool%" == "5" (
     cd "%~p0\batch"
-    addition.cmd
+    external.cmd
 )
 if "%tool%" == "6" (
+    cd "%~p0\batch"
+    addition.cmd
+)
+if "%tool%" == "7" (
     cd "%~p0\batch"
     access.cmd
 ) else (

@@ -1,4 +1,4 @@
-:tl6
+:tl7
 cls
 
 echo.
@@ -61,109 +61,109 @@ if "%tool%" == "1" (
     winver
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "2" (
     UserAccountControlSettings
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "3" (
     C:\WINDOWS\System32\wscui.cpl
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "4" (
     C:\WINDOWS\System32\control.exe /name Microsoft.Troubleshooting
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "5" (
     compmgmt
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "6" (
     msinfo32
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "7" (
     eventvwr
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "8" (
     C:\WINDOWS\System32\appwiz.cpl
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "9" (
     C:\WINDOWS\System32\control.exe system
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "10" (
     C:\WINDOWS\System32\inetcpl.cpl
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "11" (
     ipconfig
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "12" (
     perfmon
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "13" (
     resmon
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "14" (
     C:\WINDOWS\System32\taskmgr.exe /7
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "15" (
     regedt32
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "16" (
     rstrui
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "17" (
     msconfig
     pause
     echo.
-    goto tl6
+    goto tl7
 )
 if "%tool%" == "18" (
     dxdiag
     pause
     echo.
-    goto tl6
+    goto tl7
 ) else (
-    goto tl6
+    goto tl7
 )
