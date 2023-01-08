@@ -11,9 +11,11 @@ echo.       =      1]   Comprobacion de archivos del sistema                    
 echo.       =                                                                                 =
 echo.       =      2]   Comprobar archivos de reparacion                                      =
 echo.       =                                                                                 =
-echo.       =      3]   Restauracion de la imagen                                             =
+echo.       =      3]   Restauracion de la imagen del Sistema                                 =
 echo.       =                                                                                 =
 echo.       =      4]   Analisis de la estructura de datos en el disco                        =
+echo.       =                                                                                 =
+echo.       =      5]   Limpieza del Sistema                                                  =
 echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
@@ -79,6 +81,22 @@ if "%tool%" == "4" (
     shutdown /r
     pause>NUL
     exit
+)
+if "%tool%" == "5" (
+    echo.
+    echo.
+    echo.
+    echo Guarde y Cierre todo antes de continuar
+    pause
+    del C:\Users\%username%\AppData\Local\Temp /f /s /q
+    rd C:\Users\%username%\AppData\Local\Temp /s /q
+    del C:\Windows\Temp /f /s /q
+    rd C:\Windows\Temp /s /q
+    CLEANMGR /D C:
+    POWERSHELL Get-DnsClientCache
+    POWERSHELL Clear-DnsClientCache
+    pause
+    goto tl1
 ) else (
     goto tl1
 )
