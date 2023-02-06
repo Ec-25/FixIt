@@ -90,13 +90,8 @@ if "%tool%" == "3" (
     goto tl2
 )
 if "%tool%" == "4" (
-    netsh wlan show profile
-    echo.
-    echo Copie y Pegue el nombre exacto del Wifi
-    echo.
-    set /p key=Wifi?   
-    echo.
-    netsh wlan show profile name="%key%" key=clear
+    goto axw
+    :vlt
     echo.
     echo Listo!
     echo.
@@ -106,3 +101,14 @@ if "%tool%" == "4" (
 else (
     goto tl2
 )
+REM se separo del contenedor debido a que ahí no se ejecutaba la creacion de una variable
+:axw
+netsh wlan show profile
+echo.
+set /p wifi= Wifi = 
+echo.
+pause
+echo.
+netsh wlan show profile name="%wifi%" key=clear
+pause
+goto vlt
