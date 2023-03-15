@@ -46,9 +46,9 @@ if "%tool%" == "2" (
     REM free-codecs.com/download/hevc_video_extension.htm
     POWERSHELL Invoke-WebRequest -Uri "https://free-codecs.com/download_soft.php?d=0c6f463b2b5ba2af6c8e5f8c55ed5243&s=1024&r=&f=hevc_video_extension.htm" -OutFile "C:\Users\%username%\Downloads\Microsoft.HEVCVideoExtensionx64.Appx"
     timeout 5
-    MOVE "C:\Users\%username%\Downloads\ProPlus2021Retail.img" "%~p0"
+    MOVE "C:\Users\%username%\Downloads\Microsoft.HEVCVideoExtensionx64.Appx" "%~p0"
     cd %~p0
-    start ProPlus2021Retail.img
+    start Microsoft.HEVCVideoExtensionx64.Appx
     echo Listo, ejecute el Setup.exe y su programa se instalara.
     pause
     goto tl6
@@ -70,13 +70,13 @@ if "%tool%" == "3" (
     cd C:\Windows\System32
     echo.
     set /p disk=Indique el numero del disco a Convertir que NO sea GPT   
-    mbr2gpt /validate /disk:%disk% /allowFullOS
+    mbr2gpt /validate /disk:"%disk%" /allowFullOS
     echo.
     set /p valid=Solo! si el Proceso no fallo. Continue [1-Continuar ; 0-Salir]:
     if "%valid%" == "1" goto 5op4b
     if not "%valid%" == "1" goto salir
     :5op4b
-    mbr2gpt /convert /disk:%disk% /allowFullOS
+    mbr2gpt /convert /disk:"%disk%" /allowFullOS
     echo.
     echo. REINICIANDO...
     echo. Acceda a BIOS y habilite SecureBoot

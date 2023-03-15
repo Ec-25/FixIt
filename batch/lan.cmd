@@ -81,8 +81,8 @@ if "%tool%" == "3" (
     set /p DNS2= Indique el segundo DNS mas rapido que desea aplicar =   
     echo.
     echo.
-    netsh interface ipv4 set dnsservers %Red% static %DNS1% primary
-    netsh interface ipv4 add dnsservers %Red% %DNS2% index=2
+    netsh interface ipv4 set dnsservers "%Red%" static "%DNS1%" primary
+    netsh interface ipv4 add dnsservers "%Red%" "%DNS2%" index=2
     echo.
     echo Listo!
     echo.

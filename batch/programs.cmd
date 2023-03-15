@@ -211,8 +211,8 @@ if "%tool%" == "7" (
     set /p tiemp=
     echo. 
     echo.
-    echo. Usted eligio %tiemp% Dias!
-    POWERSHELL Set-MpPreference -ScanPurgeItemsAfterDelay %tiemp%
+    echo. Usted eligio "%tiemp%" Dias!
+    POWERSHELL Set-MpPreference -ScanPurgeItemsAfterDelay "%tiemp%"
     echo. Listo!
     pause
     goto tl4
@@ -221,7 +221,7 @@ if "%tool%" == "8" (
     REM start https://aka.ms/SaRA-officeUninstallFromPC
     POWERSHELL Invoke-WebRequest -Uri "https://aka.ms/SaRA-officeUninstallFromPC" -OutFile "C:\Users\%username%\Downloads\SetupProd_OffScrub.exe"
     timeout 5
-    move C:\Users\%username%\Downloads\SetupProd_OffScrub.exe %~p0
+    move C:\Users\%username%\Downloads\SetupProd_OffScrub.exe "%~p0"
     cd "%~p0"
     start SetupProd_OffScrub.exe
     pause
