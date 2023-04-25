@@ -15,7 +15,9 @@ echo.       =      3]   Restauracion de la imagen del Sistema                   
 echo.       =                                                                                 =
 echo.       =      4]   Analisis de la estructura de datos en el disco                        =
 echo.       =                                                                                 =
-echo.       =      5]   Limpieza del Sistema                                                  =
+echo.       =      5]   Convertir Disco MBR a GPT (no recomendado)                            =
+echo.       =                                                                                 =
+echo.       =      6]   Forzar Actualizaciones Del Sistema (no recomendado)                   =
 echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
@@ -83,20 +85,44 @@ if "%tool%" == "4" (
     exit
 )
 if "%tool%" == "5" (
+    cls
     echo.
+    echo.   ADVERTENCIA...
+    echo "La herramienta se diseno para ejecutarse desde un simbolo del sistema del Entorno de preinstalacion de Windows (Windows PE), pero tambien se puede ejecutar desde el sistema operativo (SO)"
+    echo.   IMPORTANTE...
+    echo. Antes de intentar convertir el disco, asegurate de que el dispositivo admita UEFI.
     echo.
+    echo. Despues de que el disco se haya convertido al estilo de particion GPT, el firmware se debe configurar para arrancar en modo UEFI.
+    set /p confirm="Desea Continuar bajo su Responsabilidad?   [1-Continuar ; 0-Salir]"
+    if "%confirm%" == "1" goto 5op4a 
+    if not "%confirm%" == "1" goto salir
+    :5op4a
+    POWERSHELL DiskPart /s dp.cmd
+    cd C:\Windows\System32
     echo.
-    echo Guarde y Cierre todo antes de continuar
+    set /p disk=Indique el numero del disco a Convertir que NO sea GPT   
+    mbr2gpt /validate /disk:"%disk%" /allowFullOS
+    echo.
+    set /p valid="Solo! si el Proceso no fallo. Continue [1-Continuar ; 0-Salir]:"
+    if "%valid%" == "1" goto 5op4b
+    if not "%valid%" == "1" goto salir
+    :5op4b
+    mbr2gpt /convert /disk:"%disk%" /allowFullOS
+    echo.
+    echo. REINICIANDO...
+    echo. Acceda a BIOS y habilite SecureBoot
+    shutdown /r /t 60
+    exit
+)
+if "%tool%" == "6" (
+    echo.
+    echo Buscando y Actualizando.
+    wuauclt /detectnow /updatenow
+    echo. Este proceso es en segundo plano, y puede tardar segun la velocidad de su internet.
     pause
-    del C:\Users\%username%\AppData\Local\Temp /f /s /q
-    rd C:\Users\%username%\AppData\Local\Temp /s /q
-    del C:\Windows\Temp /f /s /q
-    rd C:\Windows\Temp /s /q
-    CLEANMGR /D C:
-    POWERSHELL Get-DnsClientCache
-    POWERSHELL Clear-DnsClientCache
-    pause
+    echo.
     goto tl1
-) else (
+)
+else (
     goto tl1
 )

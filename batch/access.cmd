@@ -43,6 +43,8 @@ echo.       =     17]   Configuracion de Inicio del Sistema                     
 echo.       =                                                                                 =
 echo.       =     18]   Herramienta de Diagonstico de DirectX                                 =
 echo.       =                                                                                 =
+echo.       =     19]   Analisis Antimalware                                                  =
+echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -164,6 +166,13 @@ if "%tool%" == "18" (
     pause
     echo.
     goto tl7
-) else (
+)
+if "%tool%" == "19" (
+    mrt
+    pause
+    echo.
+    goto tl7
+)
+else (
     goto tl7
 )
