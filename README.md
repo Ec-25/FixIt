@@ -3,37 +3,69 @@
 
  Un simple Script capaz de optimizar y reparar casi cualquier error que pueda presentar en su equipo Windows.
  
-![Cap1](https://user-images.githubusercontent.com/57842821/211196461-887f35e5-d3f0-4edf-9890-952dcb517d56.png)
+ Esta Herramienta surge de la necesidad de reparar en ocaciones la imagen del sistema operativo windows, por lo que en vez de estar copiando cada uno de los comandos, se contruyo una aplicacion de comandos encargada de elejir y resolver facilmente.
 
-# Herramientas para el Sistema Operativo
-![Cap2](https://user-images.githubusercontent.com/57842821/211196479-a5bef201-eca1-4fd0-8554-6d4d6a298ab5.png)
+# Su Esquema.
+## SIMPLE
+1.  Reparacion Rapida
+2.  Herramientas de Limpieza
+    - Limpieza del Sistema
+    - Limpiar el Visor de Eventos
+    - Limpiar Windows Defender
+    - Editar tiempo del Historial de WinDefender
+    - Quitar Marca de agua de Windows
+    - Borrar Lista de Archivos Recientes
+## AVANZADO
+3.  Herramientas para el Sistema Operativo
+    - Comprobacion de archivos del sistema
+    - Comprobar archivos de reparacion
+    - Restauracion de la imagen del Sistema
+    - Analisis de la estructura de datos en el disco
+    - Convertir Disco MBR a GPT
+    - Forzar Actualizaciones Del Sistema
+4.  Herramientas para Internet
+    - Limpieza del DNS interno
+    - Testeo de DNS's
+    - Selector de DNS interno
+    - Ver Contraseña de Wifi's guardadas
+5.  Accesos Directos de Herramientas del Sistema
+    - Version de Windows
+    - Configuracion de Control de Cuentas de Windows
+    - Seguridad y Mantenimiento
+    - Solucionador de Problemas de Windows
+    - Administrador del Equipo
+    - Informacion del Sistema
+    - Visor de Eventos
+    - Programas y Caracteristicas
+    - Propiedades del Sistema
+    - Opciones de Internet
+    - Configuracion de Protocolo de Internet
+    - Monitor de Rendimiento
+    - Monitor de Recursos
+    - Administrador de Tareas
+    - Editor del Registro
+    - Restaurar Sistema
+    - Configuracion de Inicio del Sistema
+    - Herramienta de Diagonstico de DirectX
+    - Analisis Antimalware
+## EXTERNAS
+6.  Herramientas Extras
+    - Detener Servicios Innecesarios
+    - Desinstalar Aplicaciones
+    - Desinstalar Aplicaciones de Windows
+    - Desinstalar Office
+    - Instalar Todas las WindowsApps
+    - Instalar Seleccion de WindowsApps
+    - Instalar Codec de Video HEVC (H.265) Actializado
+    - Instalar Office 2021 (sin-licencia)
+    - Activar Viejo Visor de Fotos
+    - Agregar capa de seguridad al Sistema contra Ejecucion de Malware
+    - Quitar capa de seguridad al Sistema contra Ejecucion de Malware
+    - Deshabilitar Todas las Extensiones Webs (Chrome y Edge)
+7.  Herramientas de Terceros Recomendadas
+    - Open Hardware Monitor
+    - AutoRuns
+    - Process Explorer
+# 
 
- Encagado de Mantener la Estructura de los datos de Windows en buenas condiciones, y si algo falla se encarga de repararlo.
-
-# Herramientas para Internet
-![Cap3](https://user-images.githubusercontent.com/57842821/209219320-7e3e328e-b7c9-4813-a38a-f7acd96e178a.png)
-
- Encargado de Limpiar las archivos residuales de las comunicaciones, y con selector personal de Dominios (DNS).
- 
-# Reparacion Rapida
- Encargado de detectar y reparar rapidamente posibles fallos en las librerias e imagen de windows.
-  
-# Herramientas de Programas de Microsoft
-![Cap4](https://user-images.githubusercontent.com/57842821/211196658-2bd65b53-b3e6-4b51-ad92-209fe3c498bb.png)
-
- Opciones varias para el mantenimiento optimizado del Sistema.
- 
-# Herramientas de Terceros
-![Cap7](https://user-images.githubusercontent.com/57842821/211196713-d2e0beaf-3c84-4752-aa70-e79d278f5b90.png)
-
- Herramientas para tener el mayor control del Sistema.
- 
-# Herramientas Adicionales para el SO
-![Cap5](https://user-images.githubusercontent.com/57842821/209219366-7a82bea7-b930-409f-933f-5d5ac74bb053.png)
-
- Herramientas varias que pueden solucionar determinados problemas del equipo.
- 
- # Accesos Directos de Herramientas del Sistema
- ![Cap6](https://user-images.githubusercontent.com/57842821/209219406-9e013f41-d59a-4cee-8b5b-af496b2e48d7.png)
-
- Atajo a todas las Herramientas ocultas de windows indispensables para el mantenimiento del Sistema.
+Esta herramienta de momento solo esta disponible en Español. Pero no se descarta la posibilidad de traduccion.
