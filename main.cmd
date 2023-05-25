@@ -1,7 +1,7 @@
 @echo off
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 color 17
-title FixIt V1.12.2
+title FixIt V1.13.5
 
 :check_Permissions
 echo Se requieren permisos administrativos. Detectando permisos...

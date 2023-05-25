@@ -31,6 +31,12 @@ echo.       =      11]  Quitar capa de seguridad al Sistema contra Ejecucion de 
 echo.       =                                                                                 =
 echo.       =      12]  Deshabilitar Todas las Extensiones Webs (Chrome y Edge)               =
 echo.       =                                                                                 =
+echo.       =      13]  Actualizar Todas las Aplicaciones Disponibles del Sistema             =
+echo.       =                                                                                 =
+echo.       =      14]  Instalar PowerToys                                                    =
+echo.       =                                                                                 =
+echo.       =      15]  Recuperar Archivos Borrados                                           =
+echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -228,6 +234,41 @@ if "%tool%" == "12" (
     echo.
     "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-extensions
     "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --disable-extensions
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "13" (
+    echo.
+    POWERSHELL winget upgrade --all
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "14" (
+    echo.
+    POWERSHELL winget install --id Microsoft.PowerToys
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "15" (
+    echo.
+    set /p inst="Tienes 'Windows File Recovery' instalado? [S/n]"
+    if "%inst%" == "s" goto continue
+    if "%inst%" == "S" goto continue
+    if "%inst%" == "" goto continue
+    :install
+    start https://apps.microsoft.com/store/detail/windows-file-recovery/9N26S50LN705
+    pause
+    :continue
+    echo.
+    set /p search="Ubicacion para Buscar:[C://...] "
+    set /p save="Ubicacion para Guardar los Encontrado:[C://...] "
+    set /p filters="Filtros[/n ''user\<username>\download'' /n ''*.pdf''] "
+    @REM set /p filter="Agnadir Filtros de Extensiones para Buscar [ /n *.pdf /n *.jpg ] o deje en blanco. "
+    winfr "%search%" "%save%" /regular %filters%
+    @REM echo. %search% %save% /regular %filter%
     echo.
     pause
     goto tl4
