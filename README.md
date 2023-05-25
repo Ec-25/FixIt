@@ -62,6 +62,9 @@
     - Agregar capa de seguridad al Sistema contra Ejecucion de Malware
     - Quitar capa de seguridad al Sistema contra Ejecucion de Malware
     - Deshabilitar Todas las Extensiones Webs (Chrome y Edge)
+    - Actualizar Todas las Aplicaciones Disponibles del Sistema
+    - Instalar PowerToys
+    - Recuperar Archivos Borrados
 7.  Herramientas de Terceros Recomendadas
     - Open Hardware Monitor
     - AutoRuns

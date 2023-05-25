@@ -266,9 +266,7 @@ if "%tool%" == "15" (
     set /p search="Ubicacion para Buscar:[C://...] "
     set /p save="Ubicacion para Guardar los Encontrado:[C://...] "
     set /p filters="Filtros[/n ''user\<username>\download'' /n ''*.pdf''] "
-    @REM set /p filter="Agnadir Filtros de Extensiones para Buscar [ /n *.pdf /n *.jpg ] o deje en blanco. "
     winfr "%search%" "%save%" /regular %filters%
-    @REM echo. %search% %save% /regular %filter%
     echo.
     pause
     goto tl4
