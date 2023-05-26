@@ -1,5 +1,5 @@
 :tl3
-
+@REM set of automated commands to quickly fix damaged system files, to ensure system stability
 echo.
 echo.
 echo.

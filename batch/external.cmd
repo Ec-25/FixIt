@@ -4,7 +4,7 @@ cls
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                        HERRAMIENTAS DE PROGRAMAS EXTERNOS                       =
+echo.       =                        EXTERNAL PROGRAM TOOLS                                   =
 echo.       ===================================================================================
 echo.       =                                                                                 =
 echo.       =      1]   Open Hardware Monitor                                                 =
@@ -13,12 +13,12 @@ echo.       =      2]   AutoRuns                                                
 echo.       =                                                                                 =
 echo.       =      3]   Process Explorer                                                      =
 echo.       =                                                                                 =
-echo.       =      0]   Salir                                                                 =
+echo.       =      0]   Exit                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
-echo.       ADVERTENCIA:    Ninguno de estos programas son de mi pertenencia.
-echo.                       Es Software de Codigo Abierto recopilado de Internet desde sus fuentes oficiales.
-echo.                           Ejecutelos bajo su propio riesgo.
+echo.       WARNING:    None of these programs are owned by me.
+echo.                       It is Open Source Software collected from the Internet from its official sources..
+echo.                           Run at your own risk.
 echo.
 echo.
 
@@ -30,9 +30,12 @@ if "%tool%" == "0" (
     main.cmd
 )
 if "%tool%" == "1" (
+    @REM check that there are no such files in the program directory so as not to download them again
     if not exist "tools\OpenHardwareMonitor" (
+        @REM if it does not exist, it invokes a web request from powershell and obtains the .zip extension package, extracting it in the directory folder to be able to manage it
         POWERSHELL Invoke-WebRequest -Uri "https://openhardwaremonitor.org/files/openhardwaremonitor-v0.9.6.zip" -OutFile "ohm.zip"
         timeout 5
+        @REM Expand Archive allows you to manipulate compressed files with the extension .zip
         POWERSHELL Expand-Archive -Path ohm.zip
         CD ohm
         MOVE "OpenHardwareMonitor" "%~p0\tools"
@@ -44,7 +47,7 @@ if "%tool%" == "1" (
     start OpenHardwareMonitor.exe
     echo.
     echo.
-    echo LISTO
+    echo Done
     cd..
     cd..
     goto tl5
@@ -61,7 +64,7 @@ if "%tool%" == "2" (
     start Autoruns64.exe
     echo.
     echo.
-    echo LISTO
+    echo Done
     cd..
     cd..
     goto tl5
@@ -78,7 +81,7 @@ if "%tool%" == "3" (
     start procexp64.exe
     echo.
     echo.
-    echo LISTO
+    echo Done
     cd..
     cd..
     goto tl5

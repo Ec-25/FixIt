@@ -4,29 +4,29 @@ cls
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                            HERRAMIENTAS PARA REPARAR SO                         =
+echo.       =                            TOOLS TO REPAIR OS                                   =
 echo.       ===================================================================================
 echo.       =                                                                                 =
-echo.       =      1]   Comprobacion de archivos del sistema                                  =
+echo.       =      1]   System file check                                                     =
 echo.       =                                                                                 =
-echo.       =      2]   Comprobar archivos de reparacion                                      =
+echo.       =      2]   Check repair files                                                    =
 echo.       =                                                                                 =
-echo.       =      3]   Restauracion de la imagen del Sistema                                 =
+echo.       =      3]   System Image Restore                                                  =
 echo.       =                                                                                 =
-echo.       =      4]   Analisis de la estructura de datos en el disco                        =
+echo.       =      4]   Analysis of the data structure on disk                                =
 echo.       =                                                                                 =
-echo.       =      5]   Convertir Disco MBR a GPT (no recomendado)                            =
+echo.       =      5]   Convert MBR Disk to GPT (Not Recommended)                             =
 echo.       =                                                                                 =
-echo.       =      6]   Forzar Actualizaciones Del Sistema (no recomendado)                   =
+echo.       =      6]   Force System Updates (not recommended)                                =
 echo.       =                                                                                 =
-echo.       =      0]   Salir                                                                 =
+echo.       =      0]   Exit                                                                  =
 echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                          by JuanchoWolf
 echo.
 echo.
 
-set /p tool=Opcion =   
+set /p tool=Option =   
 
 if "%tool%" == "0" (
     cd "%~p0"
@@ -78,7 +78,7 @@ if "%tool%" == "4" (
     echo.
     chkdsk C: /F /R
     echo.
-    echo Es necesario reiniciar, Guarde todo antes de continuar
+    echo A reboot is required, Save everything before continuing
     pause
     shutdown /r
     pause>NUL
@@ -87,38 +87,41 @@ if "%tool%" == "4" (
 if "%tool%" == "5" (
     cls
     echo.
-    echo.   ADVERTENCIA...
-    echo "La herramienta se diseno para ejecutarse desde un simbolo del sistema del Entorno de preinstalacion de Windows (Windows PE), pero tambien se puede ejecutar desde el sistema operativo (SO)"
-    echo.   IMPORTANTE...
-    echo. Antes de intentar convertir el disco, asegurate de que el dispositivo admita UEFI.
+    echo.   WARNING...
+    echo "The tool is designed to be run from a Windows Preinstallation Environment (Windows PE) command prompt, but it can also be run from within the operating system (OS)."
+    echo.   IMPORTANT...
+    echo. Before attempting to convert the drive, make sure the device supports UEFI.
     echo.
-    echo. Despues de que el disco se haya convertido al estilo de particion GPT, el firmware se debe configurar para arrancar en modo UEFI.
-    set /p confirm="Desea Continuar bajo su Responsabilidad?   [1-Continuar ; 0-Salir]"
+    echo. After the disk has been converted to the GPT partition style, the firmware must be configured to boot in UEFI mode.
+    set /p confirm="Do you want to continue under your Responsibility? [1-Continue ; 0-Exit]"
     if "%confirm%" == "1" goto 5op4a 
     if not "%confirm%" == "1" goto salir
     :5op4a
     POWERSHELL DiskPart /s dp.cmd
     cd C:\Windows\System32
     echo.
-    set /p disk=Indique el numero del disco a Convertir que NO sea GPT   
+    set /p disk=Indicate the number of the disk to convert that is NOT GPT   
+    @REM First, it validates that the selected disk is suitable for conversion.
     mbr2gpt /validate /disk:"%disk%" /allowFullOS
     echo.
-    set /p valid="Solo! si el Proceso no fallo. Continue [1-Continuar ; 0-Salir]:"
+    set /p valid="Only! if the Process did not fail. Continue [1-Continue ; 0-Exit]:"
     if "%valid%" == "1" goto 5op4b
     if not "%valid%" == "1" goto salir
     :5op4b
+    @REM if it's done, convert the disk to gpt; with the fullOs variant, since you could be running the OS in ram while converting the disk structure
     mbr2gpt /convert /disk:"%disk%" /allowFullOS
     echo.
-    echo. REINICIANDO...
-    echo. Acceda a BIOS y habilite SecureBoot
+    echo. RESETTING...
+    echo. Access BIOS and enable SecureBoot
     shutdown /r /t 60
     exit
 )
 if "%tool%" == "6" (
     echo.
-    echo Buscando y Actualizando.
+    echo Searching and Updating.
+    @REM check for (/detectnow) and force system updates (/updatenow)
     wuauclt /detectnow /updatenow
-    echo. Este proceso es en segundo plano, y puede tardar segun la velocidad de su internet.
+    echo. This process is in the background, and may take time depending on your internet speed.
     pause
     echo.
     goto tl1

@@ -1,19 +1,26 @@
 @echo off
+@REM if "%1" the process is executed in a way other than being maximized
+@REM starts a new minimized process and closes the process that was not maximized
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+@REM initial setup;
 color 17
 title FixIt V1.13.5
 
 :check_Permissions
-echo Se requieren permisos administrativos. Detectando permisos...
+@REM net session requests admin permissions
+@REM if the process has such permissions, and does not return an error (%errorLevel% == 0)
+echo Administrative permissions are required. Detecting Permissions...
 net session >nul 2>&1
 if %errorLevel% == 0 (
-    echo Exito: Permisos administrativos confirmados.
+    @REM it only moves to the start point (:ini) of the program
+    echo Success: Administrative permissions confirmed.
     goto ini
 ) else (
     color 4f
-    echo Fallo: Permisos actuales inadecuados. 
-    echo        NECESITA SER ADMINISTRADOR
+    echo Failure: Inadequate current permissions.
+    echo        YOU NEED TO BE AN ADMINISTRATOR
     pause >nul
+    exit
 )
 
 :ini
@@ -24,35 +31,38 @@ echo.       =                                      FIXTOOL                      
 echo.       ===================================================================================
 echo.       =                                                                                 =
 echo.       =        SIMPLE                                                                   =
-echo.       =        s]     Reparacion Rapida                                                 =
+echo.       =        s]     Quick Repair                                                      =
 echo.       =                                                                                 =
-echo.       =        l]     Herramientas de Limpieza                                          =
+echo.       =        l]     Cleaning Tools                                                    =
 echo.       =                                                                                 =
-echo.       =        AVANZADO                                                                 =
-echo.       =        1]     Herramientas para el Sistema Operativo                            =
+echo.       =        ADVANCED                                                                 =
+echo.       =        1]     Tools for the Operating System                                    =
 echo.       =                                                                                 =
-echo.       =        2]     Herramientas para Internet                                        =
+echo.       =        2]     Web Tools                                                         =
 echo.       =                                                                                 =
-echo.       =        3]     Accesos Directos de Herramientas del Sistema                      =
+echo.       =        3]     System Tools Shortcuts                                            =
 echo.       =                                                                                 =
-echo.       =        EXTERNAS                                                                 =
-echo.       =        4]     Herramientas Extras                                               =
+echo.       =        EXTERNAL                                                                 =
+echo.       =        4]     Extra Tools                                                       =
 echo.       =                                                                                 =
-echo.       =        5]     Herramientas de Terceros                                          =
+echo.       =        5]     Third Party Tools                                                 =
 echo.       =                                                                                 =
-echo.       =        SALIDA                                                                   =
-echo.       =        0]     Salir                                                             =
+echo.       =        EXIT                                                                     =
+echo.       =        0]     Exit                                                              =
 echo.       =                                                                                 =
 echo.       ===================================================================================
 echo.                                          by JuanchoWolf
 echo.
 
-set /p tool=Opcion =   
+set /p tool=Option =   
 
+@REM in this section the new menu to be displayed is determined,
+@REM It is done this way (if after if) because a different form of structure was not found in batch that allows us to use something similar to elif (in python).
 if "%tool%" == "0" (
     exit
 )
 if "%tool%" == "s" (
+    @REM "%~p0" is a variable where the path from where the instructions of the program are executed is stored
     cd "%~p0\batch"
     flash.cmd
 )
