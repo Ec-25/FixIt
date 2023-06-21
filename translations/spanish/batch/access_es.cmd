@@ -1,56 +1,54 @@
-@REM shortcuts from the Tools tab of msconfig, to facilitate their access since not many know this section
-
 :tl7
 cls
 
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                               SHORTCUTS                                         =
+echo.       =                               ACCESOS DIRECTOS                                  =
 echo.       ===================================================================================
 echo.       =                                                                                 =
-echo.       =      1]   About Windows                                                         =
+echo.       =      1]   Version de Windows                                                    =
 echo.       =                                                                                 =
-echo.       =      2]   Change UAC Settings                                                   =
+echo.       =      2]   Configuracion de Control de Cuentas de Windows                        =
 echo.       =                                                                                 =
-echo.       =      3]   Security and Maintenance                                              =
+echo.       =      3]   Seguridad y Mantenimiento                                             =
 echo.       =                                                                                 =
-echo.       =      4]   Windows Troubleshooting                                               =
+echo.       =      4]   Solucionador de Problemas de Windows                                  =
 echo.       =                                                                                 =
-echo.       =      5]   Computer Management                                                   =
+echo.       =      5]   Administrador del Equipo                                              =
 echo.       =                                                                                 =
-echo.       =      6]   System Information                                                    =
+echo.       =      6]   Informacion del Sistema                                               =
 echo.       =                                                                                 =
-echo.       =      7]   Event Viewer                                                          =
+echo.       =      7]   Visor de Eventos                                                      =
 echo.       =                                                                                 =
-echo.       =      8]   Programs                                                              =
+echo.       =      8]   Programas y Caracteristicas                                           =
 echo.       =                                                                                 =
-echo.       =      9]   System Properties                                                     =
+echo.       =      9]   Propiedades del Sistema                                               =
 echo.       =                                                                                 =
-echo.       =     10]   Internet Options                                                      =
+echo.       =     10]   Opciones de Internet                                                  =
 echo.       =                                                                                 =
-echo.       =     11]   Internet Protocol Configuration                                       =
+echo.       =     11]   Configuracion de Protocolo de Internet                                =
 echo.       =                                                                                 =
-echo.       =     12]   Performance Monitor                                                   =
+echo.       =     12]   Monitor de Rendimiento                                                =
 echo.       =                                                                                 =
-echo.       =     13]   Resource Monitor                                                      =
+echo.       =     13]   Monitor de Recursos                                                   =
 echo.       =                                                                                 =
-echo.       =     14]   Task Manager                                                          =
+echo.       =     14]   Administrador de Tareas                                               =
 echo.       =                                                                                 =
-echo.       =     15]   Registry Editor                                                       =
+echo.       =     15]   Editor del Registro                                                   =
 echo.       =                                                                                 =
-echo.       =     16]   System Restore                                                        =
+echo.       =     16]   Restaurar Sistema                                                     =
 echo.       =                                                                                 =
-echo.       =     17]   System Configuration                                                  =
+echo.       =     17]   Configuracion de Inicio del Sistema                                   =
 echo.       =                                                                                 =
-echo.       =     18]   DirectX Diagnostic Tool                                               =
+echo.       =     18]   Herramienta de Diagonstico de DirectX                                 =
 echo.       =                                                                                 =
-echo.       =     19]   Microsoft Malicious Software Removal                                  =
+echo.       =     19]   Analisis Antimalware                                                  =
 echo.       =                                                                                 =
-echo.       =      0]   Exit                                                                  =
+echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
-echo.                                         by JuanchoWolf
+echo.                                         by Ec25
 echo.
 echo.
 
@@ -59,7 +57,7 @@ set /p tool=Opcion =
 if "%tool%" == "0" (
     cd "%~p0"
     cd..
-    main.cmd
+    main_es.cmd
 )
 if "%tool%" == "1" (
     winver

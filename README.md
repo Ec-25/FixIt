@@ -69,3 +69,13 @@
     - Open Hardware Monitor
     - AutoRuns
     - Process Explorer
+
+# Execution Order
+    main <-> batch/access
+         <-> batch/clean
+         <-> batch/dp
+         <-> batch/external
+         <-> batch/flash
+         <-> batch/lan
+         <-> batch/other
+         <-> batch/repair-so

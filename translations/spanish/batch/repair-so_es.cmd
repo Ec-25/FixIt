@@ -4,34 +4,34 @@ cls
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                            TOOLS TO REPAIR OS                                   =
+echo.       =                            HERRAMIENTAS PARA REPARAR SO                         =
 echo.       ===================================================================================
 echo.       =                                                                                 =
-echo.       =      1]   System file check                                                     =
+echo.       =      1]   Comprobacion de archivos del sistema                                  =
 echo.       =                                                                                 =
-echo.       =      2]   Check repair files                                                    =
+echo.       =      2]   Comprobar archivos de reparacion                                      =
 echo.       =                                                                                 =
-echo.       =      3]   System Image Restore                                                  =
+echo.       =      3]   Restauracion de la imagen del Sistema                                 =
 echo.       =                                                                                 =
-echo.       =      4]   Analysis of the data structure on disk                                =
+echo.       =      4]   Analisis de la estructura de datos en el disco                        =
 echo.       =                                                                                 =
-echo.       =      5]   Convert MBR Disk to GPT (Not Recommended)                             =
+echo.       =      5]   Convertir Disco MBR a GPT (no recomendado)                            =
 echo.       =                                                                                 =
-echo.       =      6]   Force System Updates (not recommended)                                =
+echo.       =      6]   Forzar Actualizaciones Del Sistema (no recomendado)                   =
 echo.       =                                                                                 =
-echo.       =      0]   Exit                                                                  =
+echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
-echo.                                          by JuanchoWolf
+echo.                                          by Ec25
 echo.
 echo.
 
-set /p tool=Option =   
+set /p tool=Opcion =   
 
 if "%tool%" == "0" (
     cd "%~p0"
     cd..
-    main.cmd
+    main_es.cmd
 )
 if "%tool%" == "1" (
     echo.
@@ -78,7 +78,7 @@ if "%tool%" == "4" (
     echo.
     chkdsk C: /F /R
     echo.
-    echo A reboot is required, Save everything before continuing
+    echo Es necesario reiniciar, Guarde todo antes de continuar
     pause
     shutdown /r
     pause>NUL
@@ -87,41 +87,41 @@ if "%tool%" == "4" (
 if "%tool%" == "5" (
     cls
     echo.
-    echo.   WARNING...
-    echo "The tool is designed to be run from a Windows Preinstallation Environment (Windows PE) command prompt, but it can also be run from within the operating system (OS)."
-    echo.   IMPORTANT...
-    echo. Before attempting to convert the drive, make sure the device supports UEFI.
+    echo.   ADVERTENCIA...
+    echo "La herramienta se diseno para ejecutarse desde un simbolo del sistema del Entorno de preinstalacion de Windows (Windows PE), pero tambien se puede ejecutar desde el sistema operativo (SO)"
+    echo.   IMPORTANTE...
+    echo. Antes de intentar convertir el disco, asegurate de que el dispositivo admita UEFI.
     echo.
-    echo. After the disk has been converted to the GPT partition style, the firmware must be configured to boot in UEFI mode.
-    set /p confirm="Do you want to continue under your Responsibility? [1-Continue ; 0-Exit]"
+    echo. Despues de que el disco se haya convertido al estilo de particion GPT, el firmware se debe configurar para arrancar en modo UEFI.
+    set /p confirm="Desea Continuar bajo su Responsabilidad?   [1-Continuar ; 0-Salir]"
     if "%confirm%" == "1" goto 5op4a 
     if not "%confirm%" == "1" goto salir
     :5op4a
     POWERSHELL DiskPart /s dp.cmd
     cd C:\Windows\System32
     echo.
-    set /p disk=Indicate the number of the disk to convert that is NOT GPT   
-    @REM First, it validates that the selected disk is suitable for conversion.
+    set /p disk=Indique el numero del disco a Convertir que NO sea GPT   
+    @REM Primero, valida que el disco seleccionado sea adecuado para la conversión.
     mbr2gpt /validate /disk:"%disk%" /allowFullOS
     echo.
-    set /p valid="Only! if the Process did not fail. Continue [1-Continue ; 0-Exit]:"
+    set /p valid="Solo! si el Proceso no fallo. Continue [1-Continuar ; 0-Salir]:"
     if "%valid%" == "1" goto 5op4b
     if not "%valid%" == "1" goto salir
     :5op4b
-    @REM if it's done, convert the disk to gpt; with the fullOs variant, since you could be running the OS in ram while converting the disk structure
+    @REM si está hecho convierta el disco a gpt; con la variante fullOs
     mbr2gpt /convert /disk:"%disk%" /allowFullOS
     echo.
-    echo. RESETTING...
-    echo. Access BIOS and enable SecureBoot
+    echo. REINICIANDO...
+    echo. Acceda a BIOS y habilite SecureBoot
     shutdown /r /t 60
     exit
 )
 if "%tool%" == "6" (
     echo.
-    echo Searching and Updating.
-    @REM check for (/detectnow) and force system updates (/updatenow)
+    echo Buscando y Actualizando.
+    @REM busca (/detectnow) y fuerza las actualizaciones del sistema (/updatenow)
     wuauclt /detectnow /updatenow
-    echo. This process is in the background, and may take time depending on your internet speed.
+    echo. Este proceso es en segundo plano, y puede tardar segun la velocidad de su internet.
     pause
     echo.
     goto tl1

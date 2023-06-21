@@ -27,15 +27,15 @@ set /p tool=Opcion =
 if "%tool%" == "0" (
     cd "%~p0"
     cd..
-    main.cmd
+    main_en.cmd
 )
 if "%tool%" == "1" (
     @REM check that there are no such files in the program directory so as not to download them again
     if not exist "tools\OpenHardwareMonitor" (
-        @REM if it does not exist, it invokes a web request from powershell and obtains the .zip extension package, extracting it in the directory folder to be able to manage it
+        @REM if it doesn't exist, invoke a web request from powershell and get the .zip extension package, extracting it to the directory folder so it can be managed
         POWERSHELL Invoke-WebRequest -Uri "https://openhardwaremonitor.org/files/openhardwaremonitor-v0.9.6.zip" -OutFile "ohm.zip"
         timeout 5
-        @REM Expand Archive allows you to manipulate compressed files with the extension .zip
+        @REM Expand Archive allows you to manipulate compressed files with the .zip extension
         POWERSHELL Expand-Archive -Path ohm.zip
         CD ohm
         MOVE "OpenHardwareMonitor" "%~p0\tools"

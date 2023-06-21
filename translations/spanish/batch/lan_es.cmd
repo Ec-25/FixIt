@@ -4,33 +4,33 @@ cls
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                                 WEB TOOLS                                       =
+echo.       =                            HERRAMIENTAS DE INTERNET                             =
 echo.       ===================================================================================
 echo.       =                                                                                 =
-echo.       =      1]   Internal DNS cleanup                                                  =
+echo.       =      1]   Limpieza del DNS interno                                              =
 echo.       =                                                                                 =
-echo.       =      2]   DNS testing                                                           =
+echo.       =      2]   Testeo de DNS's                                                       =
 echo.       =                                                                                 =
-echo.       =      3]   Internal DNS selector                                                 =
+echo.       =      3]   Selector de DNS interno                                               =
 echo.       =                                                                                 =
-echo.       =      4]   View WiFi Password                                                    =
+echo.       =      4]   Ver Contrasegna de Wifi's                                             =
 echo.       =                                                                                 =
-echo.       =      0]   Exit                                                                  =
+echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
-echo.                                             by JuanchoWolf
+echo.                                             by Ec25
 echo.
 echo.
 
-set /p tool=Option =   
+set /p tool=Opcion =   
 
 if "%tool%" == "0" (
     cd "%~p0"
     cd..
-    main.cmd
+    main_es.cmd
 )
 if "%tool%" == "1" (
-    @REM cleaning the cache allows you to solve problems of bad storage of the same, and on occasions when having too many elements stored in cache the system slows down
+    @REM limpiar la caché permite solucionar problemas de mal almacenamiento de la misma, y en ocasiones al tener demasiados elementos almacenados en caché el sistema se ralentiza
     echo.
     echo.
     echo.
@@ -44,7 +44,7 @@ if "%tool%" == "1" (
     goto tl2
 )
 if "%tool%" == "2" (
-    @REM pinging different DNS points allows you to see which one you have the least latency and data loss with, so you can automatically assign it later.
+    @REM hacer ping a diferentes puntos DNS le permite ver con cuál tiene menos latencia y pérdida de datos, para que pueda asignarlo automáticamente más tarde.
     echo.
     echo Google DNS
     ping 8.8.8.8
@@ -68,27 +68,27 @@ if "%tool%" == "2" (
     goto tl2
 )
 if "%tool%" == "3" (
-    @REM indicate and assign the fastest dns for your connection and set them in your network port
+    @REM indica y asigna los dns más rápidos para tu conexión y configúralos en tu puerto de red
     echo.
     echo.
     echo.
     netsh interface show interface
     echo.
     echo.
-    set /p Red= Indicate the name of the interface to apply the DNS change =   
+    set /p Red= Indique el nombre de la interfaz para aplicar el cambio de DNS =   
     echo.
     echo.
-    set /p DNS1= Indicate the fastest DNS you want to apply =   
+    set /p DNS1= Indique el DNS mas rapido que desea aplicar =   
     echo.
     echo.
-    set /p DNS2= Indicate the second fastest DNS you want to apply =   
+    set /p DNS2= Indique el segundo DNS mas rapido que desea aplicar =   
     echo.
     echo.
-    @REM netsh is a command package to manage computer networks
+    @REM netsh es un paquete de comandos para administrar redes informáticas
     netsh interface ipv4 set dnsservers "%Red%" static "%DNS1%" primary
     netsh interface ipv4 add dnsservers "%Red%" "%DNS2%" index=2
     echo.
-    echo Done!
+    echo Listo!
     echo.
     pause
     goto tl2
@@ -105,7 +105,7 @@ if "%tool%" == "4" (
 else (
     goto tl2
 )
-REM it was separated from the container because the creation of a variable was not executed there
+@REM se separo del contenedor debido a que ahí no se ejecutaba la creacion de una variable
 :axw
 netsh wlan show profile
 echo.
@@ -113,7 +113,7 @@ set /p wifi= Wifi =
 echo.
 pause
 echo.
-@REM displays a list of network profiles that store a password
+@REM muestra una lista de perfiles de red que almacenan una contraseña
 netsh wlan show profile name="%wifi%" key=clear
 pause
 goto vlt
