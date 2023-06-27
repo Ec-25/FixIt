@@ -37,6 +37,10 @@ echo.       =      14]  Install PowerToys                                       
 echo.       =                                                                                 =
 echo.       =      15]  Recover Deleted Files                                                 =
 echo.       =                                                                                 =
+echo.       =      16]  Remove the New Menu Design from Windows 11                            =
+echo.       =                                                                                 =
+echo.       =      17]  Return to the New Windows 11 Menu Design                              =
+echo.       =                                                                                 =
 echo.       =      0]   Exit                                                                  =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -267,6 +271,26 @@ if "%tool%" == "15" (
     set /p filters="filters[/n ''user\<username>\download'' /n ''*.pdf''] "
     @REM scans the drive for deleted files where the user indicates in the filter
     winfr "%search%" "%save%" /regular %filters%
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "16" (
+    @REM Create module in the registry to enable the old menu.
+    echo. Old Menu Enabled
+    reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
+    taskkill /f /im explorer.exe
+    start explorer.exe
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "17" (
+    @REM Delete menu module
+    echo. Old Menu Disabled
+    reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
+    taskkill /f /im explorer.exe
+    start explorer.exe
     echo.
     pause
     goto tl4

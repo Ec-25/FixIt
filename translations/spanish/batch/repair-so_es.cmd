@@ -19,6 +19,8 @@ echo.       =      5]   Convertir Disco MBR a GPT (no recomendado)              
 echo.       =                                                                                 =
 echo.       =      6]   Forzar Actualizaciones Del Sistema (no recomendado)                   =
 echo.       =                                                                                 =
+echo.       =      7]   Desfragmentar la Unidad Principal                                     =
+echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -122,6 +124,13 @@ if "%tool%" == "6" (
     @REM busca (/detectnow) y fuerza las actualizaciones del sistema (/updatenow)
     wuauclt /detectnow /updatenow
     echo. Este proceso es en segundo plano, y puede tardar segun la velocidad de su internet.
+    pause
+    echo.
+    goto tl1
+)
+if "%tool%" == "7" (
+    echo Desfragmentando unidad de disco...
+    defrag C: /U /V
     pause
     echo.
     goto tl1

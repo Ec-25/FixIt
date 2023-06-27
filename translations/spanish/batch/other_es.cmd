@@ -37,6 +37,10 @@ echo.       =      14]  Instalar PowerToys                                      
 echo.       =                                                                                 =
 echo.       =      15]  Recuperar Archivos Borrados                                           =
 echo.       =                                                                                 =
+echo.       =      16]  Quitar el Nuevo disegno de Menu de Windows 11                         =
+echo.       =                                                                                 =
+echo.       =      17]  Volver al Nuevo disegno de Menu de Windows 11                         =
+echo.       =                                                                                 =
 echo.       =      0]   Salir                                                                 =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -268,6 +272,26 @@ if "%tool%" == "15" (
     set /p filters="Filtros[/n ''user\<username>\download'' /n ''*.pdf''] "
     @REM escanea el disco en busca de archivos eliminados donde el usuario indica en el filtro
     winfr "%search%" "%save%" /regular %filters%
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "16" (
+    @REM Crear modulo en el registro para habilitar el menu viejo.
+    echo. Menu Viejo Habilitado
+    reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
+    taskkill /f /im explorer.exe
+    start explorer.exe
+    echo.
+    pause
+    goto tl4
+)
+if "%tool%" == "17" (
+    @REM Borrar el modulo del menu
+    echo. Menu Viejo Deshabilitado
+    reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
+    taskkill /f /im explorer.exe
+    start explorer.exe
     echo.
     pause
     goto tl4

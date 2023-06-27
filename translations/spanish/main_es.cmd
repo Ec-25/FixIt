@@ -2,7 +2,7 @@
 @REM si "%1" el proceso se ejecuta de una forma distinta a la maximizada, inicia un nuevo proceso minimizado y cierra el proceso que no fue maximizado
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 color 17
-title FixIt V1.14
+title FixIt V1.14.2
 
 :check_Permissions
 @REM La sesión de red solicita permisos de administrador

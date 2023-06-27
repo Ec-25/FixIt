@@ -35,16 +35,21 @@ if "%tool%" == "0" (
 )
 if "%tool%" == "1" (
     echo.
+    @REM deletes the temp folder silently; both local and Windows. At the same time, it runs the internal window cleaner and also cleans the dns cache.
     echo Save and Close everything before continuing
     pause
-    @REM deletes the temp folder silently; both local and Windows. At the same time, it runs the internal window cleaner and also cleans the dns cache.
+    @REM Temp
     del C:\Users\%username%\AppData\Local\Temp /f /s /q
     rd C:\Users\%username%\AppData\Local\Temp /s /q
     del C:\Windows\Temp /f /s /q
     rd C:\Windows\Temp /s /q
+    @REM Dns
     CLEANMGR /D C:
     POWERSHELL Get-DnsClientCache
     POWERSHELL Clear-DnsClientCache
+    @REM RecycleBin
+    rd /s /q %USERPROFILE%\RecycleBin
+    mkdir %USERPROFILE%\RecycleBin
     pause
     goto tll
 )

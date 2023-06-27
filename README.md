@@ -23,6 +23,7 @@
     - Analysis of the data structure on disk
     - Convert MBR Disk to GPT
     - Force System Updates
+    - Defrag Main Drive
 4.  Web Tools
     - Internal DNS cleanup
     - DNS testing
@@ -65,6 +66,8 @@
     - Update All Available System Applications
     - Install PowerToys
     - Recover Deleted Files
+    - Remove the New Menu Design
+    - Return to the New Windows Menu Design
 7.  Third Party Tools
     - Open Hardware Monitor
     - AutoRuns

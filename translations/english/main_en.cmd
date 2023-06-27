@@ -2,7 +2,7 @@
 @REM if "%1" the process runs in a way other than maximized, start a new minimized process and kill the process that was not maximized
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 color 17
-title FixIt V1.14
+title FixIt V1.14.2
 
 :check_Permissions
 @REM Network session requests admin permissions

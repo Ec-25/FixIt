@@ -19,6 +19,8 @@ echo.       =      5]   Convert MBR Disk to GPT (Not Recommended)               
 echo.       =                                                                                 =
 echo.       =      6]   Force System Updates (not recommended)                                =
 echo.       =                                                                                 =
+echo.       =      7]   Defrag Main Drive                                                     =
+echo.       =                                                                                 =
 echo.       =      0]   Exit                                                                  =
 echo.       =                                                                                 =
 echo.       ===================================================================================
@@ -122,6 +124,13 @@ if "%tool%" == "6" (
     @REM looks for (/detectnow) and forces system updates (/updatenow)
     wuauclt /detectnow /updatenow
     echo. This process is in the background, and may take time depending on your internet speed.
+    pause
+    echo.
+    goto tl1
+)
+if "%tool%" == "7" (
+    echo Defragmenting drive...
+    defrag C: /U /V
     pause
     echo.
     goto tl1

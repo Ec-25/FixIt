@@ -35,16 +35,21 @@ if "%tool%" == "0" (
 )
 if "%tool%" == "1" (
     echo.
+    @REM elimina la carpeta temporal en silencio; tanto local como Windows. Al mismo tiempo, ejecuta el limpiador de ventanas interno y tambien limpia el cache de dns.
     echo Guarde y Cierre todo antes de continuar
     pause
-    @REM elimina la carpeta temporal en silencio; tanto local como Windows. Al mismo tiempo, ejecuta el limpiador de ventanas interno y también limpia el caché de dns.
+    @REM Temporales
     del C:\Users\%username%\AppData\Local\Temp /f /s /q
     rd C:\Users\%username%\AppData\Local\Temp /s /q
     del C:\Windows\Temp /f /s /q
     rd C:\Windows\Temp /s /q
+    @REM Dns
     CLEANMGR /D C:
     POWERSHELL Get-DnsClientCache
     POWERSHELL Clear-DnsClientCache
+    @REM Papelera
+    rd /s /q %USERPROFILE%\RecycleBin
+    mkdir %USERPROFILE%\RecycleBin
     pause
     goto tll
 )
@@ -55,7 +60,6 @@ if "%tool%" == "2" (
     wevtutil.exe cl Application
     wevtutil.exe cl Security
     wevtutil.exe cl System
-
     echo Registros del Visor de eventos eliminados con exito.
     pause
     goto tll
