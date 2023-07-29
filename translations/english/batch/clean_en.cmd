@@ -39,17 +39,22 @@ if "%tool%" == "1" (
     echo Save and Close everything before continuing
     pause
     @REM Temp
-    del C:\Users\%username%\AppData\Local\Temp /f /s /q
-    rd C:\Users\%username%\AppData\Local\Temp /s /q
+    echo.
+    del C:\Users\"%username%"\AppData\Local\Temp /f /s /q
+    del C:\Users\"%username%"\AppData\Local\IconCache.db /f /s /q
+    rd C:\Users\"%username%"\AppData\Local\Temp /s /q
+    echo.
     del C:\Windows\Temp /f /s /q
     rd C:\Windows\Temp /s /q
     @REM Dns
+    echo.
     CLEANMGR /D C:
     POWERSHELL Get-DnsClientCache
     POWERSHELL Clear-DnsClientCache
-    @REM RecycleBin
-    rd /s /q %USERPROFILE%\RecycleBin
-    mkdir %USERPROFILE%\RecycleBin
+    @REM Papelera
+    rd /s /q "%userprofile%"\RecycleBin
+    echo.
+    mkdir "%userprofile%"\RecycleBin
     pause
     goto tll
 )

@@ -38,18 +38,23 @@ if "%tool%" == "1" (
     @REM elimina la carpeta temporal en silencio; tanto local como Windows. Al mismo tiempo, ejecuta el limpiador de ventanas interno y tambien limpia el cache de dns.
     echo Guarde y Cierre todo antes de continuar
     pause
-    @REM Temporales
-    del C:\Users\%username%\AppData\Local\Temp /f /s /q
-    rd C:\Users\%username%\AppData\Local\Temp /s /q
+    @REM Temp
+    echo.
+    del C:\Users\"%username%"\AppData\Local\Temp /f /s /q
+    del C:\Users\"%username%"\AppData\Local\IconCache.db /f /s /q
+    rd C:\Users\"%username%"\AppData\Local\Temp /s /q
+    echo.
     del C:\Windows\Temp /f /s /q
     rd C:\Windows\Temp /s /q
     @REM Dns
+    echo.
     CLEANMGR /D C:
     POWERSHELL Get-DnsClientCache
     POWERSHELL Clear-DnsClientCache
     @REM Papelera
-    rd /s /q %USERPROFILE%\RecycleBin
-    mkdir %USERPROFILE%\RecycleBin
+    rd /s /q "%userprofile%"\RecycleBin
+    echo.
+    mkdir "%userprofile%"\RecycleBin
     pause
     goto tll
 )

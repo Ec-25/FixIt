@@ -1,10 +1,9 @@
 :tl1
 cls
-
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                            HERRAMIENTAS PARA REPARAR SO                         =
+echo.       =                          HERRAMIENTAS PARA WINDOWS                              =
 echo.       ===================================================================================
 echo.       =                                                                                 =
 echo.       =      1]   Comprobacion de archivos del sistema                                  =
@@ -17,7 +16,7 @@ echo.       =      4]   Analisis de la estructura de datos en el disco          
 echo.       =                                                                                 =
 echo.       =      5]   Convertir Disco MBR a GPT (no recomendado)                            =
 echo.       =                                                                                 =
-echo.       =      6]   Forzar Actualizaciones Del Sistema (no recomendado)                   =
+echo.       =      6]   Buscar y Aplicar Actualizaciones Del Sistema                          =
 echo.       =                                                                                 =
 echo.       =      7]   Desfragmentar la Unidad Principal                                     =
 echo.       =                                                                                 =
@@ -27,9 +26,7 @@ echo.       ====================================================================
 echo.                                          by Ec25
 echo.
 echo.
-
 set /p tool=Opcion =   
-
 if "%tool%" == "0" (
     cd "%~p0"
     cd..

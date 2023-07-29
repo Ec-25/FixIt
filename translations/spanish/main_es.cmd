@@ -2,8 +2,7 @@
 @REM si "%1" el proceso se ejecuta de una forma distinta a la maximizada, inicia un nuevo proceso minimizado y cierra el proceso que no fue maximizado
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 color 17
-title FixIt V1.14.2
-
+title FixIt V1.14.6
 :check_Permissions
 @REM La sesión de red solicita permisos de administrador
 @REM si el proceso tiene dichos permisos no devuelve el error y continua su ejecucion(%errorLevel% == 0)
@@ -18,7 +17,6 @@ if %errorLevel% == 0 (
     echo        NECESITA SER ADMINISTRADOR
     pause >nul
 )
-
 :ini
 cls
 echo.
@@ -39,7 +37,7 @@ echo.       =                                                                   
 echo.       =        3]     Accesos Directos de Herramientas del Sistema                      =
 echo.       =                                                                                 =
 echo.       =        EXTERNAS                                                                 =
-echo.       =        4]     Herramientas Extras                                               =
+echo.       =        4]     Herramientas Varias                                               =
 echo.       =                                                                                 =
 echo.       =        5]     Herramientas de Terceros                                          =
 echo.       =                                                                                 =
@@ -49,9 +47,7 @@ echo.       =                                                                   
 echo.       ===================================================================================
 echo.                                          by Ec25
 echo.
-
 set /p tool=Opcion =   
-
 @REM en esta sección se determina el nuevo menú a desplegar.
 if "%tool%" == "0" (
     exit

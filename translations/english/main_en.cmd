@@ -2,8 +2,7 @@
 @REM if "%1" the process runs in a way other than maximized, start a new minimized process and kill the process that was not maximized
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 color 17
-title FixIt V1.14.2
-
+title FixIt V1.14.6
 :check_Permissions
 @REM Network session requests admin permissions
 @REM if the process has these permissions, it does not return the error and continues its execution (%errorLevel% == 0)
@@ -18,7 +17,6 @@ if %errorLevel% == 0 (
     echo        YOU NEED TO BE AN ADMINISTRATOR
     pause >nul
 )
-
 :ini
 cls
 echo.
@@ -49,9 +47,7 @@ echo.       =                                                                   
 echo.       ===================================================================================
 echo.                                          by Ec25
 echo.
-
 set /p tool=Option =   
-
 @REM in this section the new menu to be displayed is determined.
 if "%tool%" == "0" (
     exit

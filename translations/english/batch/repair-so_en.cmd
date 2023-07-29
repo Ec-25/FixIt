@@ -4,7 +4,7 @@ cls
 echo.
 echo.
 echo.       ===================================================================================
-echo.       =                            TOOLS TO REPAIR OS                                   =
+echo.       =                                 WINDOWS TOOLS                                   =
 echo.       ===================================================================================
 echo.       =                                                                                 =
 echo.       =      1]   System file check                                                     =
@@ -19,7 +19,7 @@ echo.       =      5]   Convert MBR Disk to GPT (Not Recommended)               
 echo.       =                                                                                 =
 echo.       =      6]   Force System Updates (not recommended)                                =
 echo.       =                                                                                 =
-echo.       =      7]   Defrag Main Drive                                                     =
+echo.       =      7]   Check for and Apply System Updates                                                     =
 echo.       =                                                                                 =
 echo.       =      0]   Exit                                                                  =
 echo.       =                                                                                 =
@@ -27,9 +27,7 @@ echo.       ====================================================================
 echo.                                          by Ec25
 echo.
 echo.
-
 set /p tool=Option =   
-
 if "%tool%" == "0" (
     cd "%~p0"
     cd..
