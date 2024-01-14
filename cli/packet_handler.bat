@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 
 color 17
 title Win Tools V1.0
@@ -36,6 +37,8 @@ echo.       =        3]     System Settings                                     
 echo.       =                                                                                 =
 echo.       =        4]     Packages                                                          =
 echo.       =                                                                                 =
+echo.       =        5]     Debloat                                                           =
+echo.       =                                                                                 =
 echo.       =        EXIT                                                                     =
 echo.       =        0]     Go Out                                                            =
 echo.       =                                                                                 =
@@ -46,6 +49,7 @@ echo.
 set /p option="Option: "
 
 if "%option%"=="0" (
+    endlocal
     exit /b
 ) else if "%option%"=="1" (
     goto system_shortcuts
@@ -55,6 +59,18 @@ if "%option%"=="0" (
     goto system_settings
 ) else if "%option%"=="4" (
     goto packages
+) else if "%option%"=="5" (
+    echo The Debloat option is responsible for cleaning, optimizing, repairing and eliminating all pre-installed Windows programs that are normally not used and only take up space, leaving a clean and light image of the system.
+    echo You must be careful to execute the following command since it is an irreversible process, you must also keep in mind that you should not turn off the computer or close the application during its execution since the system could be damaged.
+    echo Only execute the following option if you agree and know the risk involved.
+    echo.
+    set /p confirm="Are you sure?[y/N]: "
+    if "%confirm%"=="y" (
+        goto debloat
+    ) else if "%confirm%"=="Y" (
+        goto debloat
+    )
+    goto menu
 )
 
 goto menu
@@ -407,17 +423,19 @@ echo.       =       2]  Uninstall a Windows Apps                                
 echo.       =                                                                                 =
 echo.       =       3]  Uninstall Microsoft Office                                            =
 echo.       =                                                                                 =
-echo.       =       4]  Install All WindowsApps                                               =
+echo.       =       4]  Uninstall OneDrive                                                    =
 echo.       =                                                                                 =
-echo.       =       5]  Install Selection of WindowsApps                                      =
+echo.       =       5]  Install All WindowsApps                                               =
 echo.       =                                                                                 =
-echo.       =       6]  Install HEVC (H.265) Video Codec                                      =
+echo.       =       6]  Install Selection of WindowsApps                                      =
 echo.       =                                                                                 =
-echo.       =       7]  Install Office 2021 (without license)                                 =
+echo.       =       7]  Install HEVC (H.265) Video Codec                                      =
 echo.       =                                                                                 =
-echo.       =       8]  PowerToys                                                             =
+echo.       =       8]  Install Office 2021 (without license)                                 =
 echo.       =                                                                                 =
-echo.       =       9]  Update All Apps                                                       =
+echo.       =       9]  PowerToys                                                             =
+echo.       =                                                                                 =
+echo.       =      10]  Update All Apps                                                       =
 echo.       =                                                                                 =
 echo.       =       0]  Go Back                                                               =
 echo.       =                                                                                 =
@@ -484,6 +502,56 @@ if "%option%"=="0" (
     echo.
     pause
 ) else if "%option%"=="4" (
+    echo Kill OneDrive process
+    taskkill.exe /F /IM "OneDrive.exe"
+    taskkill.exe /F /IM "explorer.exe"
+
+    echo Remove OneDrive
+    if exist "%systemroot%\System32\OneDriveSetup.exe" (
+        "%systemroot%\System32\OneDriveSetup.exe" /uninstall
+    )
+    if exist "%systemroot%\SysWOW64\OneDriveSetup.exe" (
+        "%systemroot%\SysWOW64\OneDriveSetup.exe" /uninstall
+    )
+
+    echo Removing OneDrive leftovers
+    rmdir /s /q "%localappdata%\Microsoft\OneDrive"
+    rmdir /s /q "%programdata%\Microsoft OneDrive"
+    rmdir /s /q "%systemdrive%\OneDriveTemp"
+
+    rem check if directory is empty before removing:
+    for /f %%I in ('dir "%userprofile%\OneDrive" /a /b') do set count=1
+    if not %count%==0 (
+        rmdir /s /q "%userprofile%\OneDrive"
+    )
+
+    echo Disable OneDrive via Group Policies
+    reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\OneDrive" /v "DisableFileSyncNGSC" /t REG_DWORD /d 1 /f
+
+    echo Remove OneDrive from explorer sidebar
+    reg add "HKCR\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0 /f
+    reg add "HKCR\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0 /f
+
+    echo Removing run hook for new users
+    reg load "hku\Default" "C:\Users\Default\NTUSER.DAT"
+    reg delete "HKEY_USERS\Default\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup" /f
+    reg unload "hku\Default"
+
+    echo Removing startmenu entry
+    del /f /q "%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+
+    echo Removing scheduled task
+    schtasks /delete /tn "OneDrive*" /f
+
+    echo Restarting explorer
+    start explorer.exe
+
+    echo Waiting for explorer to complete loading
+    timeout /t 10 /nobreak
+    echo. Uninstall successful
+    pause
+
+) else if "%option%"=="5" (
     PowerShell Set-ExecutionPolicy Unrestricted
     REM registers a new application installation that has the Windows installer
     POWERSHELL "Get-AppxPackage -allusers | foreach {Add-AppxPackage -register ""$($_.InstallLocation)\appxmanifest.xml"" -DisableDevelopmentMode}"
@@ -492,7 +560,7 @@ if "%option%"=="0" (
     PowerShell Set-ExecutionPolicy Restricted
     echo. Installation successful
     pause
-) else if "%option%"=="5" (
+) else if "%option%"=="6" (
     POWERSHELL Set-ExecutionPolicy Unrestricted
     REM displays a list of apps you have available to install
     POWERSHELL "Get-AppxPackage -AllUsers | Select Name, PackageFullName"
@@ -503,7 +571,7 @@ if "%option%"=="0" (
     POWERSHELL "Add-AppxPackage -Register 'C:\Program Files\WindowsApps\%appname%\appxmanifest.xml' -DisableDevelopmentMode"
     POWERSHELL Set-ExecutionPolicy Restricted
     pause
-) else if "%option%"=="6" (
+) else if "%option%"=="7" (
     REM download and install the latest video drivers with a web prompt, this is because many people use formats that are not natively recognized by the system, to make their installation easier
     POWERSHELL Invoke-WebRequest -Uri "https://free-codecs.com/download_soft.php?d=0c6f463b2b5ba2af6c8e5f8c55ed5243&s=1024&r=&f=hevc_video_extension.htm" -OutFile "C:\Users\%username%\Downloads\Microsoft.HEVCVideoExtensionx64.Appx"
     timeout 5
@@ -512,7 +580,7 @@ if "%option%"=="0" (
     start Microsoft.HEVCVideoExtensionx64.Appx
     echo Done, run the Setup.exe and your program is installed.
     pause
-) else if "%option%"=="7" (
+) else if "%option%"=="8" (
     REM From Microsoft servers download an office iso with a trial version, and if the user has an active license all the features
     POWERSHELL Invoke-WebRequest -Uri "https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img" -OutFile "C:\Users\%username%\Downloads\ProPlus2021Retail.img"
     timeout 5
@@ -521,11 +589,11 @@ if "%option%"=="0" (
     start ProPlus2021Retail.img
     echo Done, run the Setup.exe and your program is installed.
     pause
-) else if "%option%"=="8" (
+) else if "%option%"=="9" (
     POWERSHELL winget install --id Microsoft.PowerToys
     echo.
     pause
-) else if "%option%"=="9" (
+) else if "%option%"=="10" (
     REM winget searches the list of installed applications for available updates, if it finds them it installs them automatically
     POWERSHELL winget upgrade --all
     echo.
@@ -533,3 +601,139 @@ if "%option%"=="0" (
 )
 
 goto packages
+
+
+:debloat
+if "%restorePoint%"=="0" (
+    echo Creating a Restore point
+    powershell -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description "DebloatRestorePoint" -RestorePointType "MODIFY_SETTINGS""&powershell exit
+    echo.
+    set "restorePoint=1"
+)
+
+REM remove and disable OneDrive integration.
+echo Remove OneDrive
+taskkill.exe /F /IM "OneDrive.exe"
+taskkill.exe /F /IM "explorer.exe"
+
+
+if exist "%systemroot%\System32\OneDriveSetup.exe" (
+    "%systemroot%\System32\OneDriveSetup.exe" /uninstall
+)
+if exist "%systemroot%\SysWOW64\OneDriveSetup.exe" (
+    "%systemroot%\SysWOW64\OneDriveSetup.exe" /uninstall
+)
+
+echo Removing OneDrive leftovers
+rmdir /s /q "%localappdata%\Microsoft\OneDrive"
+rmdir /s /q "%programdata%\Microsoft OneDrive"
+rmdir /s /q "%systemdrive%\OneDriveTemp"
+
+echo check if directory is empty before removing:
+for /f %%I in ('dir "%userprofile%\OneDrive" /a /b') do set count=1
+if not %count%==0 (
+    rmdir /s /q "%userprofile%\OneDrive"
+)
+
+echo Disable OneDrive via Group Policies
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\OneDrive" /v "DisableFileSyncNGSC" /t REG_DWORD /d 1 /f
+
+echo Remove OneDrive from explorer sidebar
+reg add "HKCR\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0 /f
+reg add "HKCR\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0 /f
+
+echo Removing run hook for new users
+reg load "hku\Default" "C:\Users\Default\NTUSER.DAT"
+reg delete "HKEY_USERS\Default\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup" /f
+reg unload "hku\Default"
+
+echo Removing startmenu entry
+del /f /q "%userprofile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+
+echo Removing scheduled task
+schtasks /delete /tn "OneDrive*" /f
+
+echo Restarting explorer
+start explorer.exe
+
+timeout /t 10 /nobreak
+REM == END ONEDRIVE PROCESS ==
+
+REM removes unwanted Apps that come with Windows.
+echo Uninstalling default apps
+set "apps=Microsoft.549981C3F5F10 Microsoft.3DBuilder Microsoft.Appconnector Microsoft.BingFinance Microsoft.BingNews Microsoft.BingSports Microsoft.BingTranslator Microsoft.BingWeather Microsoft.GamingServices Microsoft.MicrosoftOfficeHub Microsoft.MicrosoftPowerBIForWindows Microsoft.MicrosoftSolitaireCollection Microsoft.MinecraftUWP Microsoft.NetworkSpeedTest Microsoft.Office.OneNote Microsoft.People Microsoft.Print3D Microsoft.SkypeApp Microsoft.Wallet Microsoft.WindowsAlarms Microsoft.WindowsCamera microsoft.windowscommunicationsapps Microsoft.WindowsMaps Microsoft.WindowsPhone Microsoft.WindowsSoundRecorder Microsoft.Xbox.TCUI Microsoft.XboxApp Microsoft.XboxGameOverlay Microsoft.XboxSpeechToTextOverlay Microsoft.YourPhone Microsoft.ZuneMusic Microsoft.ZuneVideo Microsoft.CommsPhone Microsoft.ConnectivityStore Microsoft.GetHelp Microsoft.Getstarted Microsoft.Messaging Microsoft.Office.Sway Microsoft.OneConnect Microsoft.WindowsFeedbackHub Microsoft.Microsoft3DViewer Microsoft.BingFoodAndDrink Microsoft.BingHealthAndFitness Microsoft.BingTravel Microsoft.WindowsReadingList Microsoft.MixedReality.Portal Microsoft.ScreenSketch Microsoft.XboxGamingOverlay 2FE3CB00.PicsArt-PhotoStudio 46928bounde.EclipseManager 4DF9E0F8.Netflix 613EBCEA.PolarrPhotoEditorAcademicEdition 6Wunderkinder.Wunderlist 7EE7776C.LinkedInforWindows 89006A2E.AutodeskSketchBook 9E2F88E3.Twitter A278AB0D.DisneyMagicKingdoms A278AB0D.MarchofEmpires ActiproSoftwareLLC.562882FEEB491 CAF9E577.Plex ClearChannelRadioDigital.iHeartRadio D52A8D61.FarmVille2CountryEscape D5EA27B7.Duolingo-LearnLanguagesforFree DB6EA5DB.CyberLinkMediaSuiteEssentials DolbyLaboratories.DolbyAccess DolbyLaboratories.DolbyAccess Drawboard.DrawboardPDF Facebook.Facebook Fitbit.FitbitCoach Flipboard.Flipboard GAMELOFTSA.Asphalt8Airborne KeeperSecurityInc.Keeper NORDCURRENT.COOKINGFEVER PandoraMediaInc.29680B314EFC2 Playtika.CaesarsSlotsFreeCasino ShazamEntertainmentLtd.Shazam SlingTVLLC.SlingTV SpotifyAB.SpotifyMusic ThumbmunkeysLtd.PhototasticCollage TuneIn.TuneInRadio WinZipComputing.WinZipUniversal XINGAG.XING flaregamesGmbH.RoyalRevolt2 king.com.* king.com.BubbleWitch3Saga king.com.CandyCrushSaga king.com.CandyCrushSodaSaga A025C540.Yandex.Music"
+for %%i in (%apps%) do (
+    echo Trying to remove %%i
+    PowerShell -Command "Get-AppxPackage -Name '%%i' -AllUsers | Remove-AppxPackage -AllUsers"
+    PowerShell -Command "$appxprovisionedpackage = Get-AppxProvisionedPackage -Online; ($appxprovisionedpackage | Where-Object { $_.DisplayName -eq '%%i' }) | Remove-AppxProvisionedPackage -Online"
+)
+
+echo Prevents Apps from re-installing
+set "cdm=ContentDeliveryAllowed FeatureManagementEnabled OemPreInstalledAppsEnabled PreInstalledAppsEnabled PreInstalledAppsEverEnabled SilentInstalledAppsEnabled SubscribedContent-314559Enabled SubscribedContent-338387Enabled SubscribedContent-338388Enabled SubscribedContent-338389Enabled SubscribedContent-338393Enabled SubscribedContentEnabled SystemPaneSuggestionsEnabled"
+for %%i in (%cdm%) do (
+    reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v %%i /t REG_DWORD /d 0 /f
+)
+
+reg add "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" /v "AutoDownload" /t REG_DWORD /d 2 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t REG_DWORD /d 1 /f
+REM == END APPS PROCESS ==
+
+REM disables unwanted Windows services.
+echo Disabling unwanted Windows services
+set "services=diagnosticshub.standardcollector.service DiagTrack dmwappushservice lfsvc MapsBroker NetTcpPortSharing RemoteAccess RemoteRegistry SharedAccess TrkWks WbioSrvc WMPNetworkSvc XblAuthManager XblGameSave XboxNetApiSvc ndu"
+
+for %%i in (%services%) do (
+    echo Trying to disable %%i
+    sc config "%%i" start= disabled
+    net stop "%%i" >nul 2>&1
+)
+REM == END SERVICES ==
+
+REM blocks telemetry related domains via the hosts file and related IPs via Windows Firewall.
+echo Disabling telemetry via Group Policies
+set "telemetryKey=HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
+set "telemetryValue=AllowTelemetry"
+reg add "%telemetryKey%" /v "%telemetryValue%" /t REG_DWORD /d 0 /f
+
+echo Adding telemetry domains to hosts file
+set "hostsFile=%SystemRoot%\System32\drivers\etc\hosts"
+set "domains=184-86-53-99.deploy.static.akamaitechnologies.com a-0001.a-msedge.net a-0002.a-msedge.net a-0003.a-msedge.net a-0004.a-msedge.net a-0005.a-msedge.net a-0006.a-msedge.net a-0007.a-msedge.net a-0008.a-msedge.net a-0009.a-msedge.net a1621.g.akamai.net a1856.g2.akamai.net a1961.g.akamai.net a978.i6g1.akamai.net a.ads1.msn.com a.ads2.msads.net a.ads2.msn.com ac3.msn.com ad.doubleclick.net adnexus.net adnxs.com ads1.msads.net ads1.msn.com ads.msn.com aidps.atdmt.com aka-cdn-ns.adtech.de a-msedge.net any.edge.bing.com a.rad.msn.com az361816.vo.msecnd.net az512334.vo.msecnd.net b.ads1.msn.com b.ads2.msads.net bingads.microsoft.com b.rad.msn.com bs.serving-sys.com c.atdmt.com cdn.atdmt.com cds26.ams9.msecn.net choice.microsoft.com choice.microsoft.com.nsatc.net compatexchange.cloudapp.net corpext.msitadfs.glbdns2.microsoft.com corp.sts.microsoft.com cs1.wpc.v0cdn.net db3aqu.atdmt.com df.telemetry.microsoft.com diagnostics.support.microsoft.com e2835.dspb.akamaiedge.net e7341.g.akamaiedge.net e7502.ce.akamaiedge.net e8218.ce.akamaiedge.net ec.atdmt.com fe2.update.microsoft.com.akadns.net feedback.microsoft-hohm.com feedback.search.microsoft.com feedback.windows.com flex.msn.com g.msn.com h1.msn.com h2.msn.com hostedocsp.globalsign.com i1.services.social.microsoft.com i1.services.social.microsoft.com.nsatc.net lb1.www.ms.akadns.net live.rads.msn.com m.adnxs.com msedge.net msnbot-65-55-108-23.search.msn.com msntest.serving-sys.com oca.telemetry.microsoft.com oca.telemetry.microsoft.com.nsatc.net onesettings-db5.metron.live.nsatc.net pre.footprintpredict.com preview.msn.com rad.live.com rad.msn.com redir.metaservices.microsoft.com reports.wes.df.telemetry.microsoft.com schemas.microsoft.akadns.net secure.adnxs.com secure.flashtalking.com services.wes.df.telemetry.microsoft.com settings-sandbox.data.microsoft.com sls.update.microsoft.com.akadns.net sqm.df.telemetry.microsoft.com sqm.telemetry.microsoft.com sqm.telemetry.microsoft.com.nsatc.net ssw.live.com static.2mdn.net statsfe1.ws.microsoft.com statsfe2.update.microsoft.com.akadns.net statsfe2.ws.microsoft.com survey.watson.microsoft.com telecommand.telemetry.microsoft.com telecommand.telemetry.microsoft.com.nsatc.net telemetry.appex.bing.net telemetry.microsoft.com telemetry.urs.microsoft.com vortex-bn2.metron.live.com.nsatc.net vortex-cy2.metron.live.com.nsatc.net vortex.data.microsoft.com vortex-sandbox.data.microsoft.com vortex-win.data.microsoft.com cy2.vortex.data.microsoft.com.akadns.net watson.live.com watson.microsoft.com watson.ppe.telemetry.microsoft.com watson.telemetry.microsoft.com watson.telemetry.microsoft.com.nsatc.net wes.df.telemetry.microsoft.com win10.ipv6.microsoft.com www.bingads.microsoft.com www.go.microsoft.akadns.net client.wns.windows.com wdcpalt.microsoft.com settings-ssl.xboxlive.com settings-ssl.xboxlive.com-c.edgekey.net settings-ssl.xboxlive.com-c.edgekey.net.globalredir.akadns.net e87.dspb.akamaidege.net insiderservice.microsoft.com insiderservice.trafficmanager.net e3843.g.akamaiedge.net flightingserviceweurope.cloudapp.net www-google-analytics.l.google.com hubspot.net.edge.net e9483.a.akamaiedge.net stats.g.doubleclick.net stats.l.doubleclick.net adservice.google.de adservice.google.com googleads.g.doubleclick.net pagead46.l.doubleclick.net hubspot.net.edgekey.net livetileedge.dsx.mp.microsoft.com fe2.update.microsoft.com.akadns.net s0.2mdn.net statsfe2.update.microsoft.com.akadns.net survey.watson.microsoft.com view.atdmt.com watson.microsoft.com watson.ppe.telemetry.microsoft.com watson.telemetry.microsoft.com watson.telemetry.microsoft.com.nsatc.net wes.df.telemetry.microsoft.com"
+(for %%i in (%domains%) do (
+    findstr /i /c:"%%i" "!hostsFile!" >nul || echo 0.0.0.0 %%i
+)) >> "!hostsFile!"
+
+echo Adding telemetry IPs to firewall
+set "ips=134.170.30.202 137.116.81.24 157.56.106.189 184.86.53.99 2.22.61.43 2.22.61.66 204.79.197.200 23.218.212.69 65.39.117.230 65.55.108.23 64.4.54.254 8.36.80.197 8.36.80.224 8.36.80.252 8.36.113.118 8.36.113.141 8.36.80.230 8.36.80.231 8.36.113.126 8.36.80.195 8.36.80.217 8.36.80.237 8.36.80.246 8.36.113.116 8.36.113.139 8.36.80.244 216.228.121.209"
+for %%i in (%ips%) do (
+    netsh advfirewall firewall add rule name="Block Telemetry IP %%i" dir=out action=block remoteip=%%i
+)
+
+echo Blocking scheduled telemetry tasks
+schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
+schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\ProgramDataUpdater"
+schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\StartupAppTask"
+schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\PcaPatchDbTask"
+REM == END TELEMETRY PROCESS ==
+
+REM optimizes Windows updates by disabling automatic download and seeding updates to other computers.
+echo Disable automatic download and installation of Windows updates
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "AUOptions" /t REG_DWORD /d 2 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "ScheduledInstallDay" /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "ScheduledInstallTime" /t REG_DWORD /d 3 /f
+
+echo Disable seeding of updates to other computers via Group Policies
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" /v "DODownloadMode" /t REG_DWORD /d 0 /f
+
+rem echo "Disabling automatic driver update"
+rem reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t REG_DWORD /d 0 /f
+
+echo Disable 'Updates are available' message
+takeown /F "%WinDir%\System32\MusNotification.exe"
+icacls "%WinDir%\System32\MusNotification.exe" /deny "!EveryOne!:(X)"
+takeown /F "%WinDir%\System32\MusNotificationUx.exe"
+icacls "%WinDir%\System32\MusNotificationUx.exe" /deny "!EveryOne!:(X)"
+REM == END AUTOUPDATE PROCESS ==
+
+pause
+goto menu

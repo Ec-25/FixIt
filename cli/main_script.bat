@@ -1,4 +1,5 @@
 @echo off
+setlocal
 
 color 17
 title FixIt V2.0
@@ -47,6 +48,7 @@ echo.
 set /p option="Option: "
 
 if "%option%"=="0" (
+    endlocal
     exit /b
 ) else if "%option%"=="s" (
     goto quick_repair
