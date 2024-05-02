@@ -1,9 +1,6 @@
 @echo off
 setlocal
 
-color 17
-title FixIt V2.0.3
-
 REM Check administrative privileges
 net session >nul 2>&1
 if %errorlevel% neq 0 (
@@ -15,8 +12,109 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
+
+REM Flags for parameterization
+if "%1"=="" goto continue
+
+if "%1"=="-H" goto help
+if "%1"=="-help" goto help
+if "%1"=="/?" goto help
+
+if "%1"=="-R" (
+    if "%2"=="-F" (
+        goto repair_full
+    ) else (
+        goto repair
+    )
+)
+if "%1"=="-repair" (
+    if "%2"=="-F" (
+        goto repair_full
+    ) else (
+        goto repair
+    )
+)
+if "%1"=="-C" (
+    if "%2"=="-F" (
+        goto clean_full
+    ) else (
+        goto clean
+    )
+)
+if "%1"=="-clean" (
+    if "%2"=="-F" (
+        goto clean_full
+    ) else (
+        goto clean
+    )
+)
+
+echo flag "%1" not recognized
+
+:help
+REM Help method
+echo Use: fixit.bat [-H / -R / -C] [-B / -F]
+echo.
+echo Command line options:
+echo   -H   Displays the help screen with commands and usage.
+echo   -R   Run the system repair block, if the level is not specified, the repair is basic.
+echo   -C   Run the system cleanup block, if the level is not specified, the repair is basic.
+echo   [-B / -F]   -B runs Basic mode, and -F runs Full mode of the selected tool.
+echo.
+echo How to use:
+echo   Choose from the options shown in the menu to execute the desired function.
+endlocal
+exit /b
+
+:repair
+sfc /scannow
+DISM /Online /Cleanup-Image /ScanHealth
+DISM /Online /Cleanup-Image /CheckHealth
+endlocal
+exit /b
+
+:repair_full
+sfc /scannow
+DISM /Online /Cleanup-Image /ScanHealth
+DISM /Online /Cleanup-Image /CheckHealth
+DISM /Online /Cleanup-Image /StartComponentCleanup
+DISM /Online /Cleanup-Image /RestoreHealth
+defrag C: /U /V
+endlocal
+exit /b
+
+:clean
+DEL /f /q /s %temp%\*.*
+DEL /f /q /s C:\Windows\Temp\*.*
+RD /q /s C:\$Recycle.Bin
+POWERSHELL Clear-DnsClientCache
+endlocal
+exit /b
+
+:clean_full
+DEL /f /q /s %temp%\*.*
+DEL /f /q /s C:\Windows\Temp\*.*
+RD /q /s C:\$Recycle.Bin
+CLEANMGR /D C: /sagerun:65535
+POWERSHELL Clear-DnsClientCache
+wevtutil.exe cl Application
+wevtutil.exe cl Security
+wevtutil.exe cl System
+DEL /f /q "%APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*"
+DEL /f /q "%APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*"
+DEL /f /q "%APPDATA%\Microsoft\Windows\Recent\*"
+taskkill /f /im explorer.exe
+start explorer.exe
+endlocal
+exit /b
+
+
+:continue
+color 17
+title FixIt V2.1.2
+
 REM If "%1" the process is executed in a way other than the maximized one, it starts a new minimized process and closes the process that was not maximized
-if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+REM if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 
 
 :menu
@@ -30,6 +128,8 @@ echo.       =        AUTO                                                       
 echo.       =        s]     Quick Repair                                                      =
 echo.       =                                                                                 =
 echo.       =        c]     Quick Clean                                                       =
+echo.       =                                                                                 =
+echo.       =        t]     Scheduled Tasks                                                   =
 echo.       =                                                                                 =
 echo.       =        ADVANCED                                                                 =
 echo.       =        1]     System Tools                                                      =
@@ -54,6 +154,8 @@ if "%option%"=="0" (
     goto quick_repair
 ) else if "%option%"=="c" (
     goto quick_clean
+) else if "%option%"=="t" (
+    goto scheduled_tasks
 ) else if "%option%"=="1" (
     goto system_tools
 ) else if "%option%"=="2" (
@@ -92,6 +194,47 @@ taskkill /f /im explorer.exe
 start explorer.exe
 pause
 goto menu
+
+:scheduled_tasks
+cls
+echo.
+echo.       ===================================================================================
+echo.       =                               Scheduled Tasks                                   =
+echo.       ===================================================================================
+echo.       =                                                                                 =
+echo.       =      1]   Repair System Monthly                                                 =
+echo.       =                                                                                 =
+echo.       =      2]   Clean The System Monthly                                              =
+echo.       =                                                                                 =
+echo.       =      0]   Go Back                                                               =
+echo.       =                                                                                 =
+echo.       ===================================================================================
+echo.                                             by Ec25
+echo.
+
+set /p option="Option: "
+
+if "%option%"=="0" (
+    goto menu
+) else if "%option%"=="1" (
+    schtasks /create /tn "Fixit.AutoRepair" /tr "%~dp0fixit.bat -R -B" /sc "monthly" /d 1 /st "12:00" /ru %USERNAME% /F
+    REM Check if the task was created correctly
+    if %errorlevel% equ 0 (
+        echo Scheduled task created successfully.
+    ) else (
+        echo Error creating scheduled task.
+    )
+) else if "%option%"=="2" (
+    schtasks /create /tn "Fixit.AutoClean" /tr "%~dp0fixit.bat -C -B" /sc "monthly" /d 1 /st "12:00" /ru %USERNAME% /F
+    REM Check if the task was created correctly
+    if %errorlevel% equ 0 (
+        echo Scheduled task created successfully.
+    ) else (
+        echo Error creating scheduled task.
+    )
+)
+
+goto scheduled_tasks
 
 
 :cleaning_tools
