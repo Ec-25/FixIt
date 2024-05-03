@@ -1,4 +1,4 @@
-# FIXIT 2.0.3 (Beta)
+# FIXIT 2.1.2
 
 ![FIXIT Banner](https://user-images.githubusercontent.com/57842821/209219699-82159c0b-37a2-4084-ba1f-cb823b010013.png)
 
@@ -19,12 +19,17 @@ FIXIT is a lightweight and user-friendly tool designed to optimize and repair Wi
 4. Run `fixit.bat` or `packet_handler.bat` based on your needs.
 5. Follow the on-screen menu to select and execute desired actions.
 
+**if you need help use follow command: `fixit.bat` or `packet_handler.bat` -help**
+
 ## Menu Structure
 
 ### FIXIT
 - **AUTO**
   - Quick Repair
   - Quick Clean
+  - Scheduled Tasks
+    - Repair System Monthly
+    - Clean The System Monthly
 - **ADVANCED**
   - System Tools
     - System file check

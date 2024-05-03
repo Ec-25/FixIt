@@ -1,9 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-color 17
-title Win Tools V1.0
-
 REM Check administrative privileges
 net session >nul 2>&1
 if %errorlevel% neq 0 (
@@ -15,8 +12,86 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
+
+REM Flags for parameterization
+if "%1"=="" goto continue
+
+if "%1"=="-H" goto help
+if "%1"=="-help" goto help
+if "%1"=="/?" goto help
+
+if "%1"=="-D" goto debloat
+if "%1"=="-S" goto kill_services
+if "%1"=="-T" goto block_telemetry
+if "%1"=="-M" (
+    mrt
+    endlocal
+    exit /b
+)
+
+echo flag "%1" not recognized
+
+:help
+REM Help method
+echo Use: packet_handler.bat [-H / -D / -S / -T / -M]
+echo.
+echo Command line options:
+echo   -H   Displays the help screen with commands and usage.
+echo   -D   Starts the debloat function of the windows system.
+echo   -S   Stop unnecessary services.
+echo   -T   Block telemetry collection and sending.
+echo   -M   Open Microsoft Malicious Software Removal.
+echo.
+echo How to use:
+echo   Choose from the options shown in the menu to execute the desired function.
+endlocal
+exit /b
+
+:kill_services
+if "%restorePoint%"=="0" (
+    powershell -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description "FixItToolsRestorePoint" -RestorePointType "MODIFY_SETTINGS""&powershell exit
+    set "restorePoint=1"
+)
+REM sc stop "Name of Service"
+REM sc config "Name of Service" start= disabled
+sc stop defragsvc& sc config defragsvc start= disabled
+sc stop SysMain& sc config SysMain start= disabled
+sc stop Fax& sc config Fax start= disabled
+sc stop RemoteRegistry& sc config RemoteRegistry start= disable
+sc stop TapiSrv& sc config TapiSrv start= disabled
+sc stop MapsBroker& sc config MapsBroker start= disabled
+sc stop SNMPTRAP& sc config SNMPTRAP start= disabled
+sc stop PcaSvc& sc config PcaSvc start= demand& REM demand = manual
+sc stop BDESVC& sc config BDESVC start= demand
+sc stop CertPropSvc& sc config CertPropSvc start= disabled
+sc stop DiagTrack& sc config DiagTrack start= disabled
+sc stop dmwappushservice& sc config dmwappushservice start= disabled
+sc stop BITS& sc config BITS start= disabled
+sc stop Netlogon& sc config Netlogon start= disabled
+sc stop RmSvc& sc config RmSvc start= disabled
+endlocal
+exit /b
+
+:block_telemetry
+if "%restorePoint%"=="0" (
+    powershell -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description "FixItToolsRestorePoint" -RestorePointType "MODIFY_SETTINGS""&powershell exit
+    set "restorePoint=1"
+)
+REM Disable Windows Telemetry through the System Registry
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
+REM Restart the telemetry service
+net stop DiagTrack
+net stop dmwappushservice
+endlocal
+exit /b
+
+
+:continue
+color 17
+title Win Tools V1.1
+
 REM If "%1" the process is executed in a way other than the maximized one, it starts a new minimized process and closes the process that was not maximized
-if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+REM if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 
 REM Define a variable to check if a restore point has been made in case of making unwanted changes to the system.
 set "restorePoint=0"
@@ -735,5 +810,11 @@ takeown /F "%WinDir%\System32\MusNotificationUx.exe"
 icacls "%WinDir%\System32\MusNotificationUx.exe" /deny "!EveryOne!:(X)"
 REM == END AUTOUPDATE PROCESS ==
 
+echo Done, Please restart the app to continue using.
+
+taskkill /f /im explorer.exe
+start explorer.exe
+
 pause
-goto menu
+endlocal
+exit /b
