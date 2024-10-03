@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Check administrative privileges
+:: Check administrative privileges
 net session >nul 2>&1
 if %errorlevel% neq 0 (
     color 4f
@@ -13,7 +13,7 @@ if %errorlevel% neq 0 (
 )
 
 
-REM Flags for parameterization
+:: Flags for parameterization
 if "%1"=="" goto continue
 
 if "%1"=="-H" goto help
@@ -32,7 +32,7 @@ if "%1"=="-M" (
 echo flag "%1" not recognized
 
 :help
-REM Help method
+:: Help method
 echo Use: packet_handler.bat [-H / -D / -S / -T / -M]
 echo.
 echo Command line options:
@@ -52,8 +52,8 @@ if "%restorePoint%"=="0" (
     powershell -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description "FixItToolsRestorePoint" -RestorePointType "MODIFY_SETTINGS""&powershell exit
     set "restorePoint=1"
 )
-REM sc stop "Name of Service"
-REM sc config "Name of Service" start= disabled
+:: sc stop "Name of Service"
+:: sc config "Name of Service" start= disabled
 sc stop defragsvc& sc config defragsvc start= disabled
 sc stop SysMain& sc config SysMain start= disabled
 sc stop Fax& sc config Fax start= disabled
@@ -61,7 +61,7 @@ sc stop RemoteRegistry& sc config RemoteRegistry start= disable
 sc stop TapiSrv& sc config TapiSrv start= disabled
 sc stop MapsBroker& sc config MapsBroker start= disabled
 sc stop SNMPTRAP& sc config SNMPTRAP start= disabled
-sc stop PcaSvc& sc config PcaSvc start= demand& REM demand = manual
+sc stop PcaSvc& sc config PcaSvc start= demand& :: demand = manual
 sc stop BDESVC& sc config BDESVC start= demand
 sc stop CertPropSvc& sc config CertPropSvc start= disabled
 sc stop DiagTrack& sc config DiagTrack start= disabled
@@ -77,9 +77,9 @@ if "%restorePoint%"=="0" (
     powershell -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description "FixItToolsRestorePoint" -RestorePointType "MODIFY_SETTINGS""&powershell exit
     set "restorePoint=1"
 )
-REM Disable Windows Telemetry through the System Registry
+:: Disable Windows Telemetry through the System Registry
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
-REM Restart the telemetry service
+:: Restart the telemetry service
 net stop DiagTrack
 net stop dmwappushservice
 endlocal
@@ -88,12 +88,12 @@ exit /b
 
 :continue
 color 17
-title Win Tools V1.1
+title Win Tools V1.1.4
 
-REM If "%1" the process is executed in a way other than the maximized one, it starts a new minimized process and closes the process that was not maximized
-REM if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+:: If "%1" the process is executed in a way other than the maximized one, it starts a new minimized process and closes the process that was not maximized
+:: if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 
-REM Define a variable to check if a restore point has been made in case of making unwanted changes to the system.
+:: Define a variable to check if a restore point has been made in case of making unwanted changes to the system.
 set "restorePoint=0"
 
 
@@ -170,31 +170,33 @@ echo.       =      5]   Computer Management                                     
 echo.       =                                                                                 =
 echo.       =      6]   System Information                                                    =
 echo.       =                                                                                 =
-echo.       =      7]   Event Viewer                                                          =
+echo.       =      7]   Users Information                                                     =
 echo.       =                                                                                 =
-echo.       =      8]   Programs                                                              =
+echo.       =      8]   Event Viewer                                                          =
 echo.       =                                                                                 =
-echo.       =      9]   System Properties                                                     =
+echo.       =      9]   Programs                                                              =
 echo.       =                                                                                 =
-echo.       =     10]   Internet Options                                                      =
+echo.       =     10]   System Properties                                                     =
 echo.       =                                                                                 =
-echo.       =     11]   Internet Protocol Configuration                                       =
+echo.       =     11]   Internet Options                                                      =
 echo.       =                                                                                 =
-echo.       =     12]   Performance Monitor                                                   =
+echo.       =     12]   Internet Protocol Configuration                                       =
 echo.       =                                                                                 =
-echo.       =     13]   Resource Monitor                                                      =
+echo.       =     13]   Performance Monitor                                                   =
 echo.       =                                                                                 =
-echo.       =     14]   Task Manager                                                          =
+echo.       =     14]   Resource Monitor                                                      =
 echo.       =                                                                                 =
-echo.       =     15]   Registry Editor                                                       =
+echo.       =     15]   Task Manager                                                          =
 echo.       =                                                                                 =
-echo.       =     16]   System Restore                                                        =
+echo.       =     16]   Registry Editor                                                       =
 echo.       =                                                                                 =
-echo.       =     17]   System Configuration                                                  =
+echo.       =     17]   System Restore                                                        =
 echo.       =                                                                                 =
-echo.       =     18]   DirectX Diagnostic Tool                                               =
+echo.       =     18]   System Configuration                                                  =
 echo.       =                                                                                 =
-echo.       =     19]   Microsoft Malicious Software Removal                                  =
+echo.       =     19]   DirectX Diagnostic Tool                                               =
+echo.       =                                                                                 =
+echo.       =     20]   Microsoft Malicious Software Removal                                  =
 echo.       =                                                                                 =
 echo.       =      0]   Exit                                                                  =
 echo.       =                                                                                 =
@@ -225,42 +227,45 @@ if "%option%"=="0" (
     msinfo32
     pause
 ) else if "%option%"=="7" (
-    eventvwr
+    C:\WINDOWS\System32\lusrmgr.msc
     pause
 ) else if "%option%"=="8" (
-    C:\WINDOWS\System32\appwiz.cpl
+    eventvwr
     pause
 ) else if "%option%"=="9" (
-    C:\WINDOWS\System32\control.exe system
+    C:\WINDOWS\System32\appwiz.cpl
     pause
 ) else if "%option%"=="10" (
-    C:\WINDOWS\System32\inetcpl.cpl
+    C:\WINDOWS\System32\control.exe system
     pause
 ) else if "%option%"=="11" (
-    ipconfig
+    C:\WINDOWS\System32\inetcpl.cpl
     pause
 ) else if "%option%"=="12" (
-    perfmon
+    ipconfig
     pause
 ) else if "%option%"=="13" (
-    resmon
+    perfmon
     pause
 ) else if "%option%"=="14" (
-    C:\WINDOWS\System32\taskmgr.exe /7
+    resmon
     pause
 ) else if "%option%"=="15" (
-    regedt32
+    C:\WINDOWS\System32\taskmgr.exe /7
     pause
 ) else if "%option%"=="16" (
-    rstrui
+    regedt32
     pause
 ) else if "%option%"=="17" (
-    msconfig
+    rstrui
     pause
 ) else if "%option%"=="18" (
-    dxdiag
+    msconfig
     pause
 ) else if "%option%"=="19" (
+    dxdiag
+    pause
+) else if "%option%"=="20" (
     mrt
     pause
 )
@@ -299,14 +304,14 @@ if "%option%"=="0" (
     goto menu
 ) else if "%option%"=="1" (
     if "%restorePoint%"=="0" (
-        REM no policy restrictions creates a system restore point, so if something goes wrong, the computer is not affected
+        :: no policy restrictions creates a system restore point, so if something goes wrong, the computer is not affected
         echo Creating a Restore point
         powershell -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description "FixItToolsRestorePoint" -RestorePointType "MODIFY_SETTINGS""&powershell exit
         echo.
         set "restorePoint=1"
     )
-    REM sc stop "Name of Service"
-    REM sc config "Name of Service" start= disabled
+    :: sc stop "Name of Service"
+    :: sc config "Name of Service" start= disabled
     sc stop defragsvc& sc config defragsvc start= disabled
     sc stop SysMain& sc config SysMain start= disabled
     sc stop Fax& sc config Fax start= disabled
@@ -314,7 +319,7 @@ if "%option%"=="0" (
     sc stop TapiSrv& sc config TapiSrv start= disabled
     sc stop MapsBroker& sc config MapsBroker start= disabled
     sc stop SNMPTRAP& sc config SNMPTRAP start= disabled
-    sc stop PcaSvc& sc config PcaSvc start= demand& REM demand = manual
+    sc stop PcaSvc& sc config PcaSvc start= demand& :: demand = manual
     sc stop BDESVC& sc config BDESVC start= demand
     sc stop CertPropSvc& sc config CertPropSvc start= disabled
     sc stop DiagTrack& sc config DiagTrack start= disabled
@@ -347,7 +352,7 @@ if "%option%"=="0" (
     set /p search="Location to Search:[C://...] "
     set /p save="Location to Store the Found:[C://...] "
     set /p filters="Filters[/n ''user\<username>\download'' /n ''*.pdf''] "
-    REM scans the drive for deleted files where the user indicates in the filter
+    :: scans the drive for deleted files where the user indicates in the filter
     winfr "%search%" "%save%" /regular %filters%
     echo.
     pause
@@ -358,28 +363,28 @@ if "%option%"=="0" (
         echo.
         set "restorePoint=1"
     )
-    REM Disable Windows Telemetry through the System Registry
+    :: Disable Windows Telemetry through the System Registry
     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
-    REM Restart the telemetry service
+    :: Restart the telemetry service
     net stop DiagTrack
     net stop dmwappushservice
     echo Telemetry disabled successfully.
     echo.
     pause
 ) else if "%option%"=="5" (
-    REM Stop the Windows Update service
+    :: Stop the Windows Update service
     net stop wuauserv
-    REM Disable automatic updates through the Registry
-    REM NoAutoUpdate = 1 : Activated the blocking of updates
+    :: Disable automatic updates through the Registry
+    :: NoAutoUpdate = 1 : Activated the blocking of updates
     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 1 /f
     echo Automatic updates successfully disabled.
     echo.
     pause
 ) else if "%option%"=="6" (
-    REM Activate automatic updates through the Registry
-    @REM NoAutoUpdate = 0 : Disabled Lock
+    :: Activate automatic updates through the Registry
+    :: NoAutoUpdate = 0 : Disabled Lock
     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" /v NoAutoUpdate /t REG_DWORD /d 0 /f
-    @REM Activate the windows update service
+    :: Activate the windows update service
     net start wuauserv
     echo Automatic updates successfully enabled.
     echo.
@@ -410,7 +415,12 @@ echo.       =      6]  Disable All Web Extensions (Chrome and Edge)             
 echo.       =                                                                                 =
 echo.       =      7]  Disable Execution of Unsigned PS Scripts                               =
 echo.       =                                                                                 =
-echo.       =      8]  EXTRA settings                                                         =
+echo.       =      8]  Disable Windows Smartscreen (especially for sandbox)                   =
+echo.       =                                                                                 =
+echo.       =      9]  EXTRA settings                                                         =
+echo.       =                                                                                 =
+echo.       =                ================= USER CONTROLS =================                =
+echo.       =     10]  Change User Password                                                   =
 echo.       =                                                                                 =
 echo.       =      0]   Go Back                                                               =
 echo.       =                                                                                 =
@@ -423,7 +433,7 @@ set /p option="Option: "
 if "%option%"=="0" (
     goto menu
 ) else if "%option%"=="1" (
-    REM activates all the registry keys needed to run the old windows viewer which has amazing performance
+    :: activates all the registry keys needed to run the old windows viewer which has amazing performance
     reg add "HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.Bitmap" /v "ImageOptionFlags" /t REG_DWORD /d 00000001 /f
     reg add "HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.Bitmap" /v "FriendlyTypeName" /t REG_EXPAND_SZ /d "@%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll,-3056" /f
     reg add "HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.Bitmap\DefaultIcon" /ve /t REG_EXPAND_SZ /d "%SystemRoot%\System32\imageres.dll,-70" /f
@@ -434,19 +444,19 @@ if "%option%"=="0" (
     reg add "HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.JFIF" /v "FriendlyTypeName" /t REG_EXPAND_SZ /d "@%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll,-3056" /f
     pause
 ) else if "%option%"=="2" (
-    REM set the execution privacy log setting to enabled
+    :: set the execution privacy log setting to enabled
     echo. Security Layer Enabled
     REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "ConsentPromptBehaviorAdmin" /t REG_DWORD /d 1 /f
     echo.
     pause
 ) else if "%option%"=="3" (
-    REM set the runtime privacy section registry setting to disabled
+    :: set the runtime privacy section registry setting to disabled
     echo. Security Layer Disabled
     reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "ConsentPromptBehaviorAdmin" /t REG_DWORD /d 5 /f
     echo.
     pause
 ) else if "%option%"=="4" (
-    REM Create module in the registry to enable the old menu.
+    :: Create module in the registry to enable the old menu.
     echo. Old Menu Enabled
     reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
     taskkill /f /im explorer.exe
@@ -454,7 +464,7 @@ if "%option%"=="0" (
     echo.
     pause
 ) else if "%option%"=="5" (
-    REM Delete menu module
+    :: Delete menu module
     echo. Old Menu Disabled
     reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
     taskkill /f /im explorer.exe
@@ -462,22 +472,55 @@ if "%option%"=="0" (
     echo.
     pause
 ) else if "%option%"=="6" (
-    REM run internal browser commands to disable extensions due to crashes, errors, or conflicts
+    :: run internal browser commands to disable extensions due to crashes, errors, or conflicts
     "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-extensions
     "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --disable-extensions
     echo.
     pause
 ) else if "%option%"=="7" (
-    REM Disable execution of unsigned PowerShell scripts
-    reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell" /v ExecutionPolicy /t REG_SZ /d "RemoteSigned" /f
+    :: Disable execution of unsigned PowerShell scripts
+    reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell" /v ExecutionPolicy /t REG_SZ /d "AllSigned" /f
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell" /v ExecutionPolicy /t REG_SZ /d "AllSigned" /f
     echo Execution of unsigned PowerShell scripts successfully disabled.
     echo.
     pause
 ) else if "%option%"=="8" (
+    :: Disable SmartScreen
+    reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableSmartScreen /t REG_DWORD /d 0 /f
+    :: Checks if the PhishingFilter key exists, if not, creates it
+    reg query "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" >nul 2>&1
+    if %errorlevel% neq 0 (
+        reg add "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" /f
+    )
+    :: Disable Microsoft Edge's antiphishing filter
+    reg add "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" /v EnabledV9 /t REG_DWORD /d 0 /f
+    echo successfully disabled.
+    echo.
+    pause
+) else if "%option%"=="9" (
     if exist "GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" (
         start explorer.exe "GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" 
     ) else (
         mkdir "GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" 
+    )
+    pause
+) else if "%option%"=="10" (
+    echo.
+    net user
+    echo.
+    set /p user="Enter the username to change your password: "
+    :set_passwords
+    set /p pass1="Enter the new password: "
+    set /p pass2="Please enter the password again: "
+    if not "%pass1%"=="%pass2%" (
+        echo "Passwords do not match. Please try again."
+        goto set_passwords
+    )
+    net user "%user%" "%pass1%"
+    if %errorlevel% neq 0 (
+        echo "Failed to change the password. Please check if the username is correct or you have sufficient permissions."
+    ) else (
+        echo "Password changed successfully."
     )
     pause
 )
@@ -523,7 +566,7 @@ set /p option="Option: "
 if "%option%"=="0" (
     goto menu
 ) else if "%option%"=="1" (
-    REM Uninstall the indicated apps automatically with all necessary permissions.
+    :: Uninstall the indicated apps automatically with all necessary permissions.
     WMIC product get name
     echo.
     echo. Copy and paste below the app name shown in the top list to uninstall it
@@ -534,14 +577,14 @@ if "%option%"=="0" (
     if "%ans%" == "S" goto next
     if "%ans%" == "s" goto next
     goto menu
-    REM In order for it to be uninstalled, it is necessary for the program to contain an uninstaller in its data folder && There are programs that do not fully integrate it, so it is not possible to uninstall it this way
+    :: In order for it to be uninstalled, it is necessary for the program to contain an uninstaller in its data folder && There are programs that do not fully integrate it, so it is not possible to uninstall it this way
     :next
     set /p produn=AppUni=
     WMIC product where name="%produn%" call uninstall
     echo.
     pause
 ) else if "%option%"=="2" (
-    REM Uninstall automatically indicated system-owned apps with all necessary permissions.
+    :: Uninstall automatically indicated system-owned apps with all necessary permissions.
     POWERSHELL "Get-AppxPackage | Select Name, PackageFullName"
     echo.
     echo. "Copy and paste below the app name shown in the top (right) list to uninstall it"
@@ -553,11 +596,11 @@ if "%option%"=="0" (
     if "%ans%" == "s" goto next2
     goto menu
     :next2
-    REM set the execution policies to unrestricted so that you can manipulate system applications without inconvenience
+    :: set the execution policies to unrestricted so that you can manipulate system applications without inconvenience
     PowerShell Set-ExecutionPolicy Unrestricted
     echo.
     set /p appak=APPID=
-    REM PFinally, the execution restriction is placed again since otherwise it would be dangerous to leave it unlimited since anything could be installed on the computer without you knowing it
+    :: PFinally, the execution restriction is placed again since otherwise it would be dangerous to leave it unlimited since anything could be installed on the computer without you knowing it
     POWERSHELL Remove-AppxPackage "%appak%"
     echo.
     PowerShell Set-ExecutionPolicy Restricted
@@ -566,7 +609,7 @@ if "%option%"=="0" (
     if "%opt%" == "C" goto next2
     pause
 ) else if "%option%"=="3" (
-    REM download and run the office uninstall tool, as many times its internal uninstaller leaves residual files and keys that prevent the installation of a new instance.
+    :: download and run the office uninstall tool, as many times its internal uninstaller leaves residual files and keys that prevent the installation of a new instance.
     POWERSHELL Invoke-WebRequest -Uri "https://aka.ms/SaRA-officeUninstallFromPC" -OutFile "C:\Users\%username%\Downloads\SetupProd_OffScrub.exe"
     timeout 5
     move C:\Users\%username%\Downloads\SetupProd_OffScrub.exe "%~p0"
@@ -594,7 +637,7 @@ if "%option%"=="0" (
     rmdir /s /q "%programdata%\Microsoft OneDrive"
     rmdir /s /q "%systemdrive%\OneDriveTemp"
 
-    rem check if directory is empty before removing:
+    :: check if directory is empty before removing:
     for /f %%I in ('dir "%userprofile%\OneDrive" /a /b') do set count=1
     if not %count%==0 (
         rmdir /s /q "%userprofile%\OneDrive"
@@ -628,16 +671,16 @@ if "%option%"=="0" (
 
 ) else if "%option%"=="5" (
     PowerShell Set-ExecutionPolicy Unrestricted
-    REM registers a new application installation that has the Windows installer
+    :: registers a new application installation that has the Windows installer
     POWERSHELL "Get-AppxPackage -allusers | foreach {Add-AppxPackage -register ""$($_.InstallLocation)\appxmanifest.xml"" -DisableDevelopmentMode}"
-    REM Add-AppxPackage : Deployment error with HRESULT: 0x80073D02, The package could not be installed because the resources it modifies are currently in use.
-    REM if the above message comes out, then the command is executed successfully
+    :: Add-AppxPackage : Deployment error with HRESULT: 0x80073D02, The package could not be installed because the resources it modifies are currently in use.
+    :: if the above message comes out, then the command is executed successfully
     PowerShell Set-ExecutionPolicy Restricted
     echo. Installation successful
     pause
 ) else if "%option%"=="6" (
     POWERSHELL Set-ExecutionPolicy Unrestricted
-    REM displays a list of apps you have available to install
+    :: displays a list of apps you have available to install
     POWERSHELL "Get-AppxPackage -AllUsers | Select Name, PackageFullName"
     echo.
     echo "Choose the application to install from the list, and copy and paste the product identification code below (right column)"
@@ -647,7 +690,7 @@ if "%option%"=="0" (
     POWERSHELL Set-ExecutionPolicy Restricted
     pause
 ) else if "%option%"=="7" (
-    REM download and install the latest video drivers with a web prompt, this is because many people use formats that are not natively recognized by the system, to make their installation easier
+    :: download and install the latest video drivers with a web prompt, this is because many people use formats that are not natively recognized by the system, to make their installation easier
     POWERSHELL Invoke-WebRequest -Uri "https://free-codecs.com/download_soft.php?d=0c6f463b2b5ba2af6c8e5f8c55ed5243&s=1024&r=&f=hevc_video_extension.htm" -OutFile "C:\Users\%username%\Downloads\Microsoft.HEVCVideoExtensionx64.Appx"
     timeout 5
     MOVE "C:\Users\%username%\Downloads\Microsoft.HEVCVideoExtensionx64.Appx" "%~p0"
@@ -656,7 +699,7 @@ if "%option%"=="0" (
     echo Done, run the Setup.exe and your program is installed.
     pause
 ) else if "%option%"=="8" (
-    REM From Microsoft servers download an office iso with a trial version, and if the user has an active license all the features
+    :: From Microsoft servers download an office iso with a trial version, and if the user has an active license all the features
     POWERSHELL Invoke-WebRequest -Uri "https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img" -OutFile "C:\Users\%username%\Downloads\ProPlus2021Retail.img"
     timeout 5
     MOVE "C:\Users\%username%\Downloads\ProPlus2021Retail.img" "%~p0"
@@ -669,7 +712,7 @@ if "%option%"=="0" (
     echo.
     pause
 ) else if "%option%"=="10" (
-    REM winget searches the list of installed applications for available updates, if it finds them it installs them automatically
+    :: winget searches the list of installed applications for available updates, if it finds them it installs them automatically
     POWERSHELL winget upgrade --all
     echo.
     pause
@@ -686,7 +729,7 @@ if "%restorePoint%"=="0" (
     set "restorePoint=1"
 )
 
-REM remove and disable OneDrive integration.
+:: remove and disable OneDrive integration.
 echo Remove OneDrive
 taskkill.exe /F /IM "OneDrive.exe"
 taskkill.exe /F /IM "explorer.exe"
@@ -732,9 +775,9 @@ echo Restarting explorer
 start explorer.exe
 
 timeout /t 10 /nobreak
-REM == END ONEDRIVE PROCESS ==
+:: == END ONEDRIVE PROCESS ==
 
-REM removes unwanted Apps that come with Windows.
+:: removes unwanted Apps that come with Windows.
 echo Uninstalling default apps
 set "apps=Microsoft.549981C3F5F10 Microsoft.3DBuilder Microsoft.Appconnector Microsoft.BingFinance Microsoft.BingNews Microsoft.BingSports Microsoft.BingTranslator Microsoft.BingWeather Microsoft.GamingServices Microsoft.MicrosoftOfficeHub Microsoft.MicrosoftPowerBIForWindows Microsoft.MicrosoftSolitaireCollection Microsoft.MinecraftUWP Microsoft.NetworkSpeedTest Microsoft.Office.OneNote Microsoft.People Microsoft.Print3D Microsoft.SkypeApp Microsoft.Wallet Microsoft.WindowsAlarms Microsoft.WindowsCamera microsoft.windowscommunicationsapps Microsoft.WindowsMaps Microsoft.WindowsPhone Microsoft.WindowsSoundRecorder Microsoft.Xbox.TCUI Microsoft.XboxApp Microsoft.XboxGameOverlay Microsoft.XboxSpeechToTextOverlay Microsoft.YourPhone Microsoft.ZuneMusic Microsoft.ZuneVideo Microsoft.CommsPhone Microsoft.ConnectivityStore Microsoft.GetHelp Microsoft.Getstarted Microsoft.Messaging Microsoft.Office.Sway Microsoft.OneConnect Microsoft.WindowsFeedbackHub Microsoft.Microsoft3DViewer Microsoft.BingFoodAndDrink Microsoft.BingHealthAndFitness Microsoft.BingTravel Microsoft.WindowsReadingList Microsoft.MixedReality.Portal Microsoft.ScreenSketch Microsoft.XboxGamingOverlay 2FE3CB00.PicsArt-PhotoStudio 46928bounde.EclipseManager 4DF9E0F8.Netflix 613EBCEA.PolarrPhotoEditorAcademicEdition 6Wunderkinder.Wunderlist 7EE7776C.LinkedInforWindows 89006A2E.AutodeskSketchBook 9E2F88E3.Twitter A278AB0D.DisneyMagicKingdoms A278AB0D.MarchofEmpires ActiproSoftwareLLC.562882FEEB491 CAF9E577.Plex ClearChannelRadioDigital.iHeartRadio D52A8D61.FarmVille2CountryEscape D5EA27B7.Duolingo-LearnLanguagesforFree DB6EA5DB.CyberLinkMediaSuiteEssentials DolbyLaboratories.DolbyAccess DolbyLaboratories.DolbyAccess Drawboard.DrawboardPDF Facebook.Facebook Fitbit.FitbitCoach Flipboard.Flipboard GAMELOFTSA.Asphalt8Airborne KeeperSecurityInc.Keeper NORDCURRENT.COOKINGFEVER PandoraMediaInc.29680B314EFC2 Playtika.CaesarsSlotsFreeCasino ShazamEntertainmentLtd.Shazam SlingTVLLC.SlingTV SpotifyAB.SpotifyMusic ThumbmunkeysLtd.PhototasticCollage TuneIn.TuneInRadio WinZipComputing.WinZipUniversal XINGAG.XING flaregamesGmbH.RoyalRevolt2 king.com.* king.com.BubbleWitch3Saga king.com.CandyCrushSaga king.com.CandyCrushSodaSaga A025C540.Yandex.Music"
 for %%i in (%apps%) do (
@@ -751,9 +794,9 @@ for %%i in (%cdm%) do (
 
 reg add "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" /v "AutoDownload" /t REG_DWORD /d 2 /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t REG_DWORD /d 1 /f
-REM == END APPS PROCESS ==
+:: == END APPS PROCESS ==
 
-REM disables unwanted Windows services.
+:: disables unwanted Windows services.
 echo Disabling unwanted Windows services
 set "services=diagnosticshub.standardcollector.service DiagTrack dmwappushservice lfsvc MapsBroker NetTcpPortSharing RemoteAccess RemoteRegistry SharedAccess TrkWks WbioSrvc WMPNetworkSvc XblAuthManager XblGameSave XboxNetApiSvc ndu"
 
@@ -762,9 +805,9 @@ for %%i in (%services%) do (
     sc config "%%i" start= disabled
     net stop "%%i" >nul 2>&1
 )
-REM == END SERVICES ==
+:: == END SERVICES ==
 
-REM blocks telemetry related domains via the hosts file and related IPs via Windows Firewall.
+:: blocks telemetry related domains via the hosts file and related IPs via Windows Firewall.
 echo Disabling telemetry via Group Policies
 set "telemetryKey=HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
 set "telemetryValue=AllowTelemetry"
@@ -788,9 +831,9 @@ schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\Microso
 schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\ProgramDataUpdater"
 schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\StartupAppTask"
 schtasks /Change /Disable /TN "\Microsoft\Windows\Application Experience\PcaPatchDbTask"
-REM == END TELEMETRY PROCESS ==
+:: == END TELEMETRY PROCESS ==
 
-REM optimizes Windows updates by disabling automatic download and seeding updates to other computers.
+:: optimizes Windows updates by disabling automatic download and seeding updates to other computers.
 echo Disable automatic download and installation of Windows updates
 reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t REG_DWORD /d 1 /f
 reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "AUOptions" /t REG_DWORD /d 2 /f
@@ -800,15 +843,15 @@ reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\WindowsUpdate\AU" 
 echo Disable seeding of updates to other computers via Group Policies
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" /v "DODownloadMode" /t REG_DWORD /d 0 /f
 
-rem echo "Disabling automatic driver update"
-rem reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t REG_DWORD /d 0 /f
+:: echo "Disabling automatic driver update"
+:: reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching" /v "SearchOrderConfig" /t REG_DWORD /d 0 /f
 
 echo Disable 'Updates are available' message
 takeown /F "%WinDir%\System32\MusNotification.exe"
 icacls "%WinDir%\System32\MusNotification.exe" /deny "!EveryOne!:(X)"
 takeown /F "%WinDir%\System32\MusNotificationUx.exe"
 icacls "%WinDir%\System32\MusNotificationUx.exe" /deny "!EveryOne!:(X)"
-REM == END AUTOUPDATE PROCESS ==
+:: == END AUTOUPDATE PROCESS ==
 
 echo Done, Please restart the app to continue using.
 
